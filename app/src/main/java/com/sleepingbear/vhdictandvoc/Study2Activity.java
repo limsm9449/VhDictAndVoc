@@ -211,7 +211,7 @@ public class Study2Activity extends AppCompatActivity implements View.OnClickLis
         } else if (v.getId() == R.id.my_a_study2_rb_m_not) {
             mMemorization = "N";
             getListView();
-        } else if (v.getId() == R.id.my_a_study3_rb_word) {
+        } else if (v.getId() == R.id.my_a_study2_rb_word) {
             mWordMean = "WORD";
             getListView();
         } else if (v.getId() == R.id.my_a_study2_rb_mean) {
@@ -301,7 +301,7 @@ class Study2CursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view = null;
-        DicUtils.dicLog("newView : ==================");
+        //DicUtils.dicLog("newView : ==================");
 
         view = LayoutInflater.from(context).inflate(R.layout.content_study2_item, parent, false);
 
@@ -466,16 +466,18 @@ class Study2CursorAdapter extends CursorAdapter {
             ((TextView) view.findViewById(R.id.my_c_s2i_tv_answer)).setText("");
         }
 
+        /*
         DicUtils.dicLog("aaaa : " + cursor.getPosition() + "," + (mAnswerAl.get(cursor.getPosition()).chkAnswer == 1 ? true : false) + "," +
                 (mAnswerAl.get(cursor.getPosition()).chkAnswer == 2 ? true : false)  + "," +
                 (mAnswerAl.get(cursor.getPosition()).chkAnswer == 3 ? true : false)  + "," +
                 (mAnswerAl.get(cursor.getPosition()).chkAnswer == 4 ? true : false)  + ","  );
+                */
 
         String logStr = "";
         for ( int i = 0; i < mAnswerAl.size(); i++ ) {
             logStr += mAnswerAl.get(i).chkAnswer + ", ";
         }
-        DicUtils.dicLog("bindview : " + cursor.getPosition() + " -> " + logStr);
+        //DicUtils.dicLog("bindview : " + cursor.getPosition() + " -> " + logStr);
 
         //암기 체크박스
         String memorization = cursor.getString(cursor.getColumnIndexOrThrow("MEMORIZATION"));

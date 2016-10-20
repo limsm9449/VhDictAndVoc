@@ -3,6 +3,7 @@ package com.sleepingbear.vhdictandvoc;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager.LayoutParams;
@@ -138,7 +139,12 @@ public class FileChooser {
      */
     private File getChosenFile(String fileChosen) {
         if (fileChosen.equals(PARENT_DIR)) {
-            return currentPath.getParentFile();
+            //내부 메모리 Root와 같은지를 비교한다.
+            if ( Environment.getExternalStorageDirectory().getAbsoluteFile().equals(currentPath.getAbsoluteFile()) ) {
+                return currentPath;
+            } else {
+                return currentPath.getParentFile();
+            }
         } else {
             return new File(currentPath, fileChosen);
         }

@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPageSelected(int position) {
-                DicUtils.dicLog(this.getClass().toString() + " onPageSelected" + " : " + position);
+                //DicUtils.dicLog(this.getClass().toString() + " onPageSelected" + " : " + position);
                 selectedTab = position;
 
                 //mPager.setCurrentItem(position);
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                DicUtils.dicLog(this.getClass().toString() + " onTabSelected" + " : " + tab.getPosition());
+                //DicUtils.dicLog(this.getClass().toString() + " onTabSelected" + " : " + tab.getPosition());
                 selectedTab = tab.getPosition();
                 //tab 변경
                 mPager.setCurrentItem(selectedTab);
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                DicUtils.dicLog(this.getClass().toString() + " onTabReselected" + " : " + tab.getPosition());
+                //DicUtils.dicLog(this.getClass().toString() + " onTabReselected" + " : " + tab.getPosition());
             }
         });
 
@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //뷰의 내용이 변경되었을때...
     public void setChangeViewPaper(int position, int changeKind) {
-        DicUtils.dicLog(this.getClass().toString() + " setChangeViewPaper" + " : " + position);
+        //DicUtils.dicLog(this.getClass().toString() + " setChangeViewPaper" + " : " + position);
         try {
             fab.setVisibility(View.VISIBLE);
 
@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (selectedTab == 0) {
                 new AlertDialog.Builder(this)
                         .setTitle("알림")
-                        .setMessage("오늘의 단어를 초기화 하시겠습니까?")
+                        .setMessage("단어장을 초기화 하시겠습니까?")
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else if (selectedTab == 2) {
                 new AlertDialog.Builder(this)
                         .setTitle("알림")
-                        .setMessage("단어장을 초기화 하시겠습니까?")
+                        .setMessage("오늘의 단어를 초기화 하시겠습니까?")
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -394,32 +394,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtras(bundle);
 
             startActivity(intent);
-            /*
-        } else if (id == R.id.action_study) {
-            Intent intent = new Intent(getApplication(), StudyActivity.class);
-            Bundle bundle = new Bundle();
-            intent.putExtras(bundle);
-
-            startActivity(intent);
-        } else if (id == R.id.action_mySample) {
-            Intent intent = new Intent(getApplication(), MySampleActivity.class);
-            Bundle bundle = new Bundle();
-            intent.putExtras(bundle);
-
-            startActivity(intent);
-        } else if (id == R.id.action_grammar) {
-            Intent intent = new Intent(getApplication(), GrammarActivity.class);
-            Bundle bundle = new Bundle();
-            intent.putExtras(bundle);
-
-            startActivity(intent);
-        } else if (id == R.id.action_category) {
-            Intent intent = new Intent(getApplication(), DicCategoryActivity.class);
-            Bundle bundle = new Bundle();
-            intent.putExtras(bundle);
-
-            startActivity(intent);
-            */
         }
 
         return super.onOptionsItemSelected(item);
@@ -433,17 +407,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                       @Override
                       public void onClick(DialogInterface dialog, int which) {
                           if (selectedTab == 0) {
-                              DicDb.initToday(db);
-
-                              //DicUtils.writeTodayToFile(getApplicationContext(), db);
-
-                              ((TodayFragment) adapter.getItem(selectedTab)).changeListView();
-                          } else if (selectedTab == 2) {
                               DicDb.initVocabulary(db);
 
-                              //DicUtils.writeVocabularyToFile(getApplicationContext(), db);
+                              DicUtils.writeNewInfoToFile(getApplicationContext(), db);
 
                               ((VocabularyFragment) adapter.getItem(selectedTab)).changeListView();
+                          } else if (selectedTab == 2) {
+                              DicDb.initToday(db);
+
+                              DicUtils.writeNewInfoToFile(getApplicationContext(), db);
+
+                              ((TodayFragment) adapter.getItem(selectedTab)).changeListView();
                           }
                       }
                   })

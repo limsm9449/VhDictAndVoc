@@ -30,17 +30,19 @@ public class PatchActivity extends AppCompatActivity {
 
         StringBuffer patch = new StringBuffer();
 
-        patch.append("- 어플 교육을 배우지 않고, 인터넷을 찾아가면 어플을 만들다 보니 개발도 시간이 많이 걸리고 많은 시행착오를 거치는것 같습니다." + CommConstants.sqlCR);
-        patch.append("- 사용해보시고 문제점이 있으면 알려주시기 바랍니다." + CommConstants.sqlCR);
-        patch.append("- 제 어플이 베트남어 공부에 도움이 되었으면 합니다." + CommConstants.sqlCR);
+        patch.append("- 어플 교육을 배우지 않고, 인터넷을 찾아가면 어플을 만들다 보니 개발 시간이 많이 걸리고 많은 시행착오를 거치는 것 같습니다.");
+        patch.append(" 사용해 보시고 문제점이 있으면 알려주시기 바랍니다.");
+        patch.append(" 제 어플이 베트남어 공부에 도움이 되었으면 합니다.");
         patch.append("" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
 
-        patch.append("* 2016.10.22" + CommConstants.sqlCR);
+        patch.append("* 2016.10.20" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
         patch.append("- 사전 검색시 진행바를 보여주도록 수정" + CommConstants.sqlCR);
         patch.append("- 상단에 그림자 나오는 문제점 수정" + CommConstants.sqlCR);
         patch.append("- 학습 관련 오류사항 수정" + CommConstants.sqlCR);
+        patch.append("- 단어장, 오늘의 단어 데이타 초기화시 문제점 수정" + CommConstants.sqlCR);
+        patch.append("- 파일 선택시 상위로 계속 갈경우 어플이 죽는 오류 수정(내부 메모리 영역에서만 파일 탐색이 되도록 수정)" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
 
@@ -68,14 +70,6 @@ public class PatchActivity extends AppCompatActivity {
         patch.append("나의 예문 메뉴를 클릭해서 예문을 조회 하실 수 있습니다." + CommConstants.sqlCR);
         patch.append("- 카테고리에 Naver 회화를 추가했습니다." + CommConstants.sqlCR);
         patch.append("- 안드로이드 6 에서 폴더를 찾지 못하는 문제점을 수정하였습니다." + CommConstants.sqlCR);
-
-        patch.append("" + CommConstants.sqlCR);
-        patch.append("" + CommConstants.sqlCR);
-        patch.append("* 2016.7.24" + CommConstants.sqlCR);
-        patch.append("" + CommConstants.sqlCR);
-        patch.append("- 제가 공부하고자 만든 App 이지만 처음 개발을 하기 때문에 오류가 많습니다." + CommConstants.sqlCR);
-        patch.append("사전 DB를 사용하기 때문에 DB 변경시 데이타가 사라지는 문제도 좀 있기 때문에 단어장은 백업을 받아 주시기 바랍니다. " + CommConstants.sqlCR);
-        patch.append("애기 때문에 개발할 시간이 부족하지만 열심히 공부해서 좋은 어플을 만들도록 하겠습니다." + CommConstants.sqlCR);
 
         patch.append("" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
