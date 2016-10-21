@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        /*
         String flag_other = "other_20160814";
         if ( "N".equals(prefs.getString(flag_other, "N")) ) {
             DicUtils.writeNewInfoToFile(this, db);
@@ -197,29 +198,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editor.putString(flag_other, "Y");
             editor.commit();
         };
-
-        /*
-        String flag_patch = "patch_20160724";
-        if ( "N".equals(prefs.getString(flag_patch, "N")) ) {
-            Intent intent = new Intent(getApplication(), PatchActivity.class);
-            startActivity(intent);
-
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(flag_patch, "Y");
-            editor.commit();
-        };
         */
 
+        checkPermission();
+    }
+
+    public boolean checkPermission() {
+        Log.d(CommConstants.tag, "checkPermission");
+        boolean isCheck = false;
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED ) {
+            Log.d(CommConstants.tag, "권한 없음");
             if ( ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ) {
-                Log.d(CommConstants.tag, "1111");
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST);
-                Log.d(CommConstants.tag, "2222");
+                Toast.makeText(this, "(중요)파일로 내보내기, 가져오기를 하기 위해서 권한이 필요합니다.", Toast.LENGTH_LONG).show();
             }
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST);
+            Log.d(CommConstants.tag, "2222");
         } else {
             Log.d(CommConstants.tag, "권한 있음");
+            isCheck = true;
         }
+
+        return isCheck;
     }
 
     @Override
@@ -230,10 +229,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d(CommConstants.tag, "권한 허가");
                 } else {
                     Log.d(CommConstants.tag, "권한 거부");
+                    Toast.makeText(this, "파일 권한이 없기 때문에 파일 내보내기, 가져오기를 할 수 없습니다.\n만일 권한 팝업이 안열리면 '다시 묻지 않기'를 선택하셨기 때문입니다.\n어플을 지우고 다시 설치하셔야 합니다.", Toast.LENGTH_LONG).show();
                 }
                 return;
         }
     }
+
     protected View.OnLongClickListener hiddenFunc = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
@@ -263,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
     };
+
 
     //뷰의 내용이 변경되었을때...
     public void setChangeViewPaper(int position, int changeKind) {
@@ -383,11 +385,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (id == R.id.action_other) {
-            Intent intent = new Intent(getApplication(), OtherActivity.class);
-            Bundle bundle = new Bundle();
-            intent.putExtras(bundle);
+            if ( checkPermission() ==  true ) {
+                Intent intent = new Intent(getApplication(), OtherActivity.class);
+                Bundle bundle = new Bundle();
+                intent.putExtras(bundle);
 
-            startActivity(intent);
+                startActivityForResult(intent, CommConstants.a_other);
+            }
         } else if (id == R.id.action_patch) {
             Intent intent = new Intent(getApplication(), PatchActivity.class);
             Bundle bundle = new Bundle();
@@ -399,7 +403,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-      public void confirmAllDelete() {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        DicUtils.dicLog("onActivityResult : " + requestCode + " : " + resultCode);
+        switch ( requestCode ) {
+            case CommConstants.a_other :
+                if ( resultCode == Activity.RESULT_OK && "Y".equals(data.getStringExtra("isChange")) ) {
+                    if ( selectedTab == 0 ) {
+                        ((VocabularyFragment) adapter.getItem(0)).changeListView();
+                    } else if ( selectedTab == 2 ) {
+                        ((TodayFragment) adapter.getItem(2)).changeListView();
+                    }
+                }
+                break;
+            case CommConstants.a_vocabulary :
+                ((VocabularyFragment) adapter.getItem(0)).changeListView();
+                break;
+            case CommConstants.a_dicCategory :
+                ((VocabularyFragment) adapter.getItem(0)).changeListView();
+                break;
+        }
+    }
+
+    public void confirmAllDelete() {
           new AlertDialog.Builder(this)
                   .setTitle("알림")
                   .setMessage("초기화 후에는 데이타를 복구할 수 없습니다.")
@@ -427,7 +452,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                       }
                   })
                   .show();
-      }
+    }
 }
 
 class MainPagerAdapter extends FragmentPagerAdapter {

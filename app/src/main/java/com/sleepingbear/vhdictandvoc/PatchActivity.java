@@ -36,13 +36,12 @@ public class PatchActivity extends AppCompatActivity {
         patch.append("" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
 
-        patch.append("* 2016.10.20" + CommConstants.sqlCR);
+        patch.append("* 2016.10.21" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
+        patch.append("- 처음 메모리 접근 권한을 취소한 경우 권한이 다시는 안보이는 문제점 수정" + CommConstants.sqlCR);
         patch.append("- 사전 검색시 진행바를 보여주도록 수정" + CommConstants.sqlCR);
         patch.append("- 상단에 그림자 나오는 문제점 수정" + CommConstants.sqlCR);
-        patch.append("- 학습 관련 오류사항 수정" + CommConstants.sqlCR);
-        patch.append("- 단어장, 오늘의 단어 데이타 초기화시 문제점 수정" + CommConstants.sqlCR);
-        patch.append("- 파일 선택시 상위로 계속 갈경우 어플이 죽는 오류 수정(내부 메모리 영역에서만 파일 탐색이 되도록 수정)" + CommConstants.sqlCR);
+        patch.append("- 파일 선택시 상위로 계속 올라갈 경우 어플이 죽는 오류 수정(내부 메모리 영역에서만 파일 탐색이 되도록 수정)" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
 
