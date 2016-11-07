@@ -36,6 +36,12 @@ public class PatchActivity extends AppCompatActivity {
         patch.append("" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
 
+        patch.append("* 2016.11.7" + CommConstants.sqlCR);
+        patch.append("" + CommConstants.sqlCR);
+        patch.append("- 카테고리 > 단어 선택시 발생하는 오류 수정" + CommConstants.sqlCR);
+        patch.append("" + CommConstants.sqlCR);
+        patch.append("" + CommConstants.sqlCR);
+
         patch.append("* 2016.10.21" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
         patch.append("- 처음 메모리 접근 권한을 취소한 경우 권한이 다시는 안보이는 문제점 수정" + CommConstants.sqlCR);
