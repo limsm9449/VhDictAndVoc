@@ -32,10 +32,11 @@ public class PatchActivity extends AppCompatActivity {
 
         patch.append("* 신규 패치" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
-        patch.append("- 검색단어 입력후 X 버튼 클릭시 재조회로 불편함이 있어 입력을 받도록 수정" + CommConstants.sqlCR);
+        patch.append("- 검색된 사전에서 롱클릭을 하면 바로 단어장으로 등록을 할 수 있습니다." + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
         patch.append("" + CommConstants.sqlCR);
 
+        patch.append("- 검색단어 입력후 X 버튼 클릭시 재조회로 불편함이 있어 입력을 받도록 수정" + CommConstants.sqlCR);
         patch.append("- 카테고리 > 단어 선택시 발생하는 오류 수정" + CommConstants.sqlCR);
         patch.append("- 처음 메모리 접근 권한을 취소한 경우 권한이 다시는 안보이는 문제점 수정" + CommConstants.sqlCR);
         patch.append("- 사전 검색시 진행바를 보여주도록 수정" + CommConstants.sqlCR);

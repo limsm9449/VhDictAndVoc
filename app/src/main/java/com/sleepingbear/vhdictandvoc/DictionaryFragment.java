@@ -56,6 +56,7 @@ public class DictionaryFragment extends Fragment implements View.OnClickListener
 
     private Activity mActivity;
     private Cursor dictionaryCursor;
+    private int dSelect = 0;
 
     DicSearchTask task;
 
@@ -152,93 +153,28 @@ public class DictionaryFragment extends Fragment implements View.OnClickListener
                 sql.append(" ORDER BY KIND DESC, ORD" + CommConstants.sqlCR);
             } else {
                 // 여러 단어일때...
-                Cursor wordCursor = null;
                 String word = "";
-                ArrayList<String> al = new ArrayList<String>();
-                String[] splitStr = DicUtils.sentenceSplit(et_search.getText().toString());
-                for (int m = 0; m < splitStr.length; m++) {
-                    // 3 단어
-                    word = DicUtils.getSentenceWord(splitStr, 3, m);
-                    if (!"".equals(word)) {
-                        wordCursor = db.rawQuery(DicQuery.getDicForWord(word), null);
-                        if (wordCursor.moveToNext()) {
-                            if (!al.contains(wordCursor.getString(wordCursor.getColumnIndexOrThrow("ENTRY_ID")))) {
-                                al.add(wordCursor.getString(wordCursor.getColumnIndexOrThrow("ENTRY_ID")));
-                            }
-
-                            m += 4;
-
-                            wordCursor.close();
-                            continue;
-                        }
-                        wordCursor.close();
+                String[] splitStr = DicUtils.sentenceSplit(et_search.getText().toString().replaceAll("'", ""));
+                for ( int m = 0; m < splitStr.length; m++ ) {
+                    DicUtils.dicSqlLog(splitStr[m]);
+                }
+                for ( int m = 0; m < splitStr.length; m++ ) {
+                    if ( " ".equals(splitStr[m]) || "".equals(splitStr[m]) ) {
+                        continue;
                     }
-
+                    word += DicUtils.getSentenceWord(splitStr, 3, m) + ",";
                     // 2 단어
-                    word = DicUtils.getSentenceWord(splitStr, 2, m);
-                    if (!"".equals(word)) {
-                        wordCursor = db.rawQuery(DicQuery.getDicForWord(word), null);
-                        if (wordCursor.moveToNext()) {
-                            if (!al.contains(wordCursor.getString(wordCursor.getColumnIndexOrThrow("ENTRY_ID")))) {
-                                al.add(wordCursor.getString(wordCursor.getColumnIndexOrThrow("ENTRY_ID")));
-                            }
-
-                            m += 2;
-
-                            wordCursor.close();
-                            continue;
-                        }
-                        wordCursor.close();
-                    }
-
+                    word += DicUtils.getSentenceWord(splitStr, 2, m) + ",";
                     // 1 단어
-                    word = DicUtils.getSentenceWord(splitStr, 1, m);
-                    if (!"".equals(word)) {
-                        wordCursor = db.rawQuery(DicQuery.getDicForWord(word), null);
-                        if (wordCursor.moveToNext()) {
-                            if (!al.contains(wordCursor.getString(wordCursor.getColumnIndexOrThrow("ENTRY_ID")))) {
-                                al.add(wordCursor.getString(wordCursor.getColumnIndexOrThrow("ENTRY_ID")));
-                            }
-                        }
-                        wordCursor.close();
-                    }
+                    word += DicUtils.getSentenceWord(splitStr, 1, m) + ",";
                 }
-                //나머지 단어들
-                for (int m = 0; m < splitStr.length; m++) {
-                    // 2 단어
-                    word = DicUtils.getSentenceWord(splitStr, 2, m);
-                    if (!"".equals(word)) {
-                        wordCursor = db.rawQuery(DicQuery.getDicForWord(word), null);
-                        if (wordCursor.moveToNext()) {
-                            if (!al.contains(wordCursor.getString(wordCursor.getColumnIndexOrThrow("ENTRY_ID")))) {
-                                al.add(wordCursor.getString(wordCursor.getColumnIndexOrThrow("ENTRY_ID")));
-                            }
-                        }
-                        wordCursor.close();
-                    }
+                DicUtils.dicSqlLog(word);
 
-                    word = DicUtils.getSentenceWord(splitStr, 1, m);
-                    if (!"".equals(word)) {
-                        wordCursor = db.rawQuery(DicQuery.getDicForWord(word), null);
-                        if (wordCursor.moveToNext()) {
-                            if (!al.contains(wordCursor.getString(wordCursor.getColumnIndexOrThrow("ENTRY_ID")))) {
-                                al.add(wordCursor.getString(wordCursor.getColumnIndexOrThrow("ENTRY_ID")));
-                            }
-                        }
-                        wordCursor.close();
-                    }
+                sql.append("SELECT SEQ _id, WORD, MEAN, ENTRY_ID, SPELLING, HANMUN, KIND FROM DIC A WHERE WORD IN ('" + word.substring(0, word.length() -1).toLowerCase().replaceAll(",","','") + "')" + CommConstants.sqlCR);
+                if (!"A".equals(mVhKind)) {
+                    sql.append("   AND KIND = '" + mVhKind + "'" + CommConstants.sqlCR);
                 }
-
-                for (int i = 0; i < al.size(); i++) {
-                    if (i > 0) {
-                        sql.append("UNION" + CommConstants.sqlCR);
-                    }
-                    sql.append("SELECT SEQ _id, WORD, MEAN, ENTRY_ID, SPELLING, HANMUN, KIND, " + i + " ORD FROM DIC A WHERE ENTRY_ID = '" + al.get(i) + "'" + CommConstants.sqlCR);
-                    if (!"A".equals(mVhKind)) {
-                        sql.append("   AND KIND = '" + mVhKind + "'" + CommConstants.sqlCR);
-                    }
-                }
-                sql.append(" ORDER BY KIND DESC, ORD" + CommConstants.sqlCR);
+                sql.append(" ORDER BY WORD" + CommConstants.sqlCR);
             }
         } else {
             //문장일때...
@@ -280,12 +216,51 @@ public class DictionaryFragment extends Fragment implements View.OnClickListener
 
         dictionaryListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         dictionaryListView.setOnItemClickListener(itemClickListener);
+        dictionaryListView.setOnItemLongClickListener(itemLongClickListener);
         dictionaryListView.setSelection(0);
 
         //소프트 키보드 없애기
         InputMethodManager imm= (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
     }
+
+    AdapterView.OnItemLongClickListener itemLongClickListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            //단어장 다이얼로그 생성
+            Cursor cursor = db.rawQuery(DicQuery.getVocabularyCategory(), null);
+            final String[] kindCodes = new String[cursor.getCount()];
+            final String[] kindCodeNames = new String[cursor.getCount()];
+
+            int idx = 0;
+            while ( cursor.moveToNext() ) {
+                kindCodes[idx] = cursor.getString(cursor.getColumnIndexOrThrow("KIND"));
+                kindCodeNames[idx] = cursor.getString(cursor.getColumnIndexOrThrow("KIND_NAME"));
+                idx++;
+            }
+            cursor.close();
+
+            final AlertDialog.Builder dlg = new AlertDialog.Builder(mActivity);
+            dlg.setTitle("단어장 선택");
+            dlg.setSingleChoiceItems(kindCodeNames, dSelect, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    dSelect = arg1;
+                }
+            });
+            dlg.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Cursor cur = (Cursor) dicAdapter.getCursor();
+                    DicDb.insDicVoc(db, cur.getString(cur.getColumnIndexOrThrow("ENTRY_ID")), kindCodes[dSelect]);
+                }
+            });
+
+            dlg.show();
+
+            return false;
+        }
+    };
 
     /**
      * 단어가 선택되면은 단어 상세창을 열어준다.
