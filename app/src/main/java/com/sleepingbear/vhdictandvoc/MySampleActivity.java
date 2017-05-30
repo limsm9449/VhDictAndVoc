@@ -83,7 +83,7 @@ public class MySampleActivity extends AppCompatActivity {
             cur.moveToPosition(position);
 
             Bundle bundle = new Bundle();
-            bundle.putString("viet", cur.getString(cur.getColumnIndexOrThrow("SENTENCE1")));
+            bundle.putString("foreign", cur.getString(cur.getColumnIndexOrThrow("SENTENCE1")));
             bundle.putString("han", cur.getString(cur.getColumnIndexOrThrow("SENTENCE2")));
 
             Intent intent = new Intent(getApplicationContext(), SentenceViewActivity.class);
@@ -121,7 +121,7 @@ public class MySampleActivity extends AppCompatActivity {
                             DicDb.delDicMySample(db, cur.getString(cur.getColumnIndexOrThrow("SENTENCE1")));
 
                             // 기록..
-                            DicUtils.writeInfoToFile(getApplicationContext(), "MYSAMPLE_DELETE" + ":" + cur.getString(cur.getColumnIndexOrThrow("SENTENCE1")));
+                            //DicUtils.writeInfoToFile(getApplicationContext(), "MYSAMPLE_DELETE" + ":" + cur.getString(cur.getColumnIndexOrThrow("SENTENCE1")));
 
                             changeListView();
                         }

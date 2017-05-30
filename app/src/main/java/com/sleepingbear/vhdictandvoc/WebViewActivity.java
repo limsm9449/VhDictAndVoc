@@ -63,7 +63,7 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putString("viet", ((ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE)).getText().toString());
+                bundle.putString("foreign", ((ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE)).getText().toString());
 
                 Intent intent = new Intent(getApplication(), SentenceViewActivity.class);
                 intent.putExtras(bundle);

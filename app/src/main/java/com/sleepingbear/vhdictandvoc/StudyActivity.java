@@ -38,8 +38,6 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
     private int mStudyKind = 1;
     private String mStudyKindName = "";
     private String mMemorization = "ALL";
-    private String mFromDate = "";
-    private String mToDate = "";
 
     private ArrayList<String> mVocKindAl;
     private ArrayList<String> mVocKindNameAl;
@@ -109,29 +107,6 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         RadioButton rb_m_not = (RadioButton) findViewById(R.id.my_f_stu_rb_m_not);
         rb_m_not.setOnClickListener(this);
 
-        ImageButton ib_fromdate = (ImageButton) findViewById(R.id.my_f_stu_ib_fromdate);
-        ib_fromdate.setOnClickListener(this);
-        TextView tv_sel_fromdate = (TextView) findViewById(R.id.my_f_stu_tv_sel_fromdate);
-
-        //시작일자는 preferences에서 가져온다.
-        String fromDate = DicUtils.getDelimiterDate(DicUtils.getAddDay(DicUtils.getCurrentDate(), -60),".");
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if ( prefs.contains("fromDate") ) {
-            tv_sel_fromdate.setText(prefs.getString("fromDate", fromDate));
-        } else {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("fromDate", fromDate);
-            editor.commit();
-            tv_sel_fromdate.setText(fromDate);
-        }
-        mFromDate = tv_sel_fromdate.getText().toString();
-
-        ImageButton ib_todate = (ImageButton) findViewById(R.id.my_f_stu_ib_todate);
-        ib_todate.setOnClickListener(this);
-        TextView tv_sel_todate = (TextView) findViewById(R.id.my_f_stu_tv_sel_todate);
-        tv_sel_todate.setText(DicUtils.getDelimiterDate(DicUtils.getCurrentDate(),"."));
-        mToDate = tv_sel_todate.getText().toString();
-
         Button b_start = (Button) findViewById(R.id.my_f_stu_b_start);
         b_start.setOnClickListener(this);
 
@@ -139,7 +114,6 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         AdRequest adRequest = new  AdRequest.Builder().build();
         av.loadAd(adRequest);
     }
-
 
     public void getVocKind() {
         if ( mVocKindAl == null ) {
@@ -165,48 +139,11 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
             mMemorization = "Y";
         } else if ( v.getId() == R.id.my_f_stu_rb_m_not ) {
             mMemorization = "N";
-        } else if ( v.getId() == R.id.my_f_stu_ib_fromdate ) {
-            String date = ((TextView) findViewById(R.id.my_f_stu_tv_sel_fromdate)).getText().toString();
-            DatePickerDialog dialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            TextView tv_sel_fromdate = (TextView) findViewById(R.id.my_f_stu_tv_sel_fromdate);
-                            tv_sel_fromdate.setText(year + "." + (monthOfYear + 1> 9 ? "" : "0") + (monthOfYear + 1) + "." + (dayOfMonth> 9 ? "" : "0") + dayOfMonth);
-                            mFromDate = tv_sel_fromdate.getText().toString();
-
-                            //preferences에 저장
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.putString("fromDate", mFromDate);
-                            editor.commit();
-                        }
-                    },
-                    Integer.parseInt(DicUtils.getYear(date)),
-                    Integer.parseInt(DicUtils.getMonth(date)) - 1,
-                    Integer.parseInt(DicUtils.getDay(date)));
-            dialog.show();
-        } else if ( v.getId() == R.id.my_f_stu_ib_todate ) {
-            String date = ((TextView) findViewById(R.id.my_f_stu_tv_sel_todate)).getText().toString();
-            DatePickerDialog dialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            TextView tv_sel_todate = (TextView) findViewById(R.id.my_f_stu_tv_sel_todate);
-                            tv_sel_todate.setText(year + "." + (monthOfYear + 1> 9 ? "" : "0") + (monthOfYear + 1) + "." + (dayOfMonth> 9 ? "" : "0") + dayOfMonth);
-                            mToDate = tv_sel_todate.getText().toString();
-                        }
-                    },
-                    Integer.parseInt(DicUtils.getYear(date)),
-                    Integer.parseInt(DicUtils.getMonth(date)) - 1,
-                    Integer.parseInt(DicUtils.getDay(date)));
-            dialog.show();
         } else if ( v.getId() == R.id.my_f_stu_b_start ) {
             Bundle bundle = new Bundle();
             bundle.putString("vocKind", mVocKind);
             bundle.putString("studyKindName", mStudyKindName);
             bundle.putString("memorization", mMemorization);
-            bundle.putString("fromDate", mFromDate);
-            bundle.putString("toDate", mToDate);
 
             Cursor cursor = db.rawQuery(DicQuery.getVocabularyCount(), null);
             if ( cursor.moveToNext() ) {

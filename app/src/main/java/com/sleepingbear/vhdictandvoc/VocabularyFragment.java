@@ -1,7 +1,6 @@
 package com.sleepingbear.vhdictandvoc;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,12 +8,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +25,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
@@ -111,7 +104,7 @@ public class VocabularyFragment extends Fragment implements View.OnClickListener
                             mDb.execSQL(DicQuery.getUpdCategory("MY", (String) v.getTag(), et_upd.getText().toString()));
 
                             //기록...
-                            DicUtils.writeInfoToFile(getContext(), "CATEGORY_UPDATE" + ":" + (String) v.getTag() + ":" + et_upd.getText().toString());
+                           //DicUtils.writeInfoToFile(getContext(), "CATEGORY_UPDATE" + ":" + (String) v.getTag() + ":" + et_upd.getText().toString());
 
                             changeListView();
 
@@ -143,7 +136,7 @@ public class VocabularyFragment extends Fragment implements View.OnClickListener
 
                                             //기록...
                                             //DicUtils.writeInfoToFile(getContext(), "CATEGORY_DELETE" + ":" + code);
-                                            DicUtils.writeNewInfoToFile(getContext(), mDb);
+                                            //DicUtils.writeNewInfoToFile(getContext(), mDb);
                                             changeListView();
 
                                             Toast.makeText(getContext(), "단어장을 삭제하였습니다.", Toast.LENGTH_SHORT).show();
@@ -159,6 +152,7 @@ public class VocabularyFragment extends Fragment implements View.OnClickListener
                     }
                 });
 
+                /*
                 final EditText et_saveName = ((EditText) dialog_layout.findViewById(R.id.my_d_category_et_save));
                 et_saveName.setText("vocabulary.txt");
                 ((Button) dialog_layout.findViewById(R.id.my_d_category_b_save)).setTag(cur.getString(cur.getColumnIndexOrThrow("KIND")));
@@ -231,7 +225,7 @@ public class VocabularyFragment extends Fragment implements View.OnClickListener
                         }
                     }
                 });
-
+*/
                 ((Button) dialog_layout.findViewById(R.id.my_d_category_b_upload)).setTag(cur.getString(cur.getColumnIndexOrThrow("KIND")));
                 ((Button) dialog_layout.findViewById(R.id.my_d_category_b_upload)).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -258,7 +252,7 @@ public class VocabularyFragment extends Fragment implements View.OnClickListener
                                     }
                                     isr.close();
 
-                                    DicUtils.writeNewInfoToFile(getContext(), mDb);
+                                    //DicUtils.writeNewInfoToFile(getContext(), mDb);
 
                                     changeListView();
 
@@ -302,7 +296,7 @@ public class VocabularyFragment extends Fragment implements View.OnClickListener
             startActivity(intent);
         } else  if ( v.getId() == R.id.my_f_dic_b_2 ) {
             Intent intent = new Intent(this.getActivity().getApplication(), DicCategoryActivity.class);
-            getActivity().startActivityForResult(intent, CommConstants.a_dicCategory);
+            getActivity().startActivity(intent);
         } else if ( v.getId() == R.id.my_f_dic_b_3 ) {
             Intent intent = new Intent(this.getActivity().getApplication(), GrammarActivity.class);
             getActivity().startActivity(intent);
@@ -360,7 +354,7 @@ class VocabularyFlagmentCursorAdapter extends CursorAdapter {
                 bundle.putString("kindName", vViewHolder.kindName);
                 intent.putExtras(bundle);
 
-                mFragment.getActivity().startActivityForResult(intent, CommConstants.a_vocabulary);
+                mFragment.getActivity().startActivity(intent);
             }
         });
 
@@ -376,7 +370,7 @@ class VocabularyFlagmentCursorAdapter extends CursorAdapter {
         viewHolder.kind = cursor.getString(cursor.getColumnIndexOrThrow("KIND"));
         viewHolder.kindName = cursor.getString(cursor.getColumnIndexOrThrow("KIND_NAME"));
 
-        TextView tv_category = (TextView) view.findViewById(R.id.my_c_s1i_tv_question);
+        TextView tv_category = (TextView) view.findViewById(R.id.my_tv_question);
         tv_category.setText(cursor.getString(cursor.getColumnIndexOrThrow("KIND_NAME")));
 
         TextView tv_cnt = (TextView) view.findViewById(R.id.my_f_cat_tv_cnt);

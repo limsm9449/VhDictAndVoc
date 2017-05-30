@@ -92,7 +92,7 @@ public class TodayFragment extends Fragment implements View.OnClickListener {
                     DicDb.insToday(db, todayCursor.getString(todayCursor.getColumnIndexOrThrow("ENTRY_ID")), today);
 
                     //기록...
-                    DicUtils. writeInfoToFile(getContext(), "TODAY" + ":" + today + ":" + todayCursor.getString(todayCursor.getColumnIndexOrThrow("ENTRY_ID")));
+                    //DicUtils. writeInfoToFile(getContext(), "TODAY" + ":" + today + ":" + todayCursor.getString(todayCursor.getColumnIndexOrThrow("ENTRY_ID")));
 
                     if ( cnt == 10 ) {
                         break;

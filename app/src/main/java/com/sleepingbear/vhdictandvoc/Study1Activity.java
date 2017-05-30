@@ -6,12 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,13 +27,9 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import java.util.HashMap;
-
 public class Study1Activity extends AppCompatActivity implements View.OnClickListener {
     private String mVocKind;
     private String mMemorization;
-    private String mFromDate;
-    private String mToDate;
 
     private String mWordMean;
 
@@ -57,8 +53,6 @@ public class Study1Activity extends AppCompatActivity implements View.OnClickLis
         Bundle b = this.getIntent().getExtras();
         mVocKind = b.getString("vocKind");
         mMemorization = b.getString("memorization");
-        mFromDate = b.getString("fromDate");
-        mToDate = b.getString("toDate");
         mWordMean = "WORD";
 
         ActionBar ab = (ActionBar) getSupportActionBar();
@@ -106,10 +100,10 @@ public class Study1Activity extends AppCompatActivity implements View.OnClickLis
         sql.append("       B.SEQ," + CommConstants.sqlCR);
         if ( "WORD".equals(mWordMean) ) {
             sql.append("       B.WORD QUESTION," + CommConstants.sqlCR);
-            sql.append("       REPLACE(B.MEAN, '<br>', ' ') ANSWER," + CommConstants.sqlCR);
+            sql.append("       B.MEAN ANSWER," + CommConstants.sqlCR);
         } else {
             sql.append("       B.WORD ANSWER," + CommConstants.sqlCR);
-            sql.append("       REPLACE(B.MEAN, '<br>', ' ') QUESTION," + CommConstants.sqlCR);
+            sql.append("       B.MEAN QUESTION," + CommConstants.sqlCR);
         }
         sql.append("       B.ENTRY_ID," + CommConstants.sqlCR);
         sql.append("       A.MEMORIZATION" + CommConstants.sqlCR);
@@ -119,8 +113,6 @@ public class Study1Activity extends AppCompatActivity implements View.OnClickLis
         if (mMemorization.length() == 1) {
             sql.append("   AND A.MEMORIZATION = '" + mMemorization + "' " + CommConstants.sqlCR);
         }
-        sql.append("   AND A.INS_DATE >= '" + mFromDate + "' " + CommConstants.sqlCR);
-        sql.append("   AND A.INS_DATE <= '" + mToDate + "' " + CommConstants.sqlCR);
         sql.append(" ORDER BY A.RANDOM_SEQ" + CommConstants.sqlCR);
         DicUtils.dicSqlLog(sql.toString());
 
@@ -186,7 +178,7 @@ public class Study1Activity extends AppCompatActivity implements View.OnClickLis
             finish();
         } else if (id == R.id.action_help) {
             Bundle bundle = new Bundle();
-            bundle.putString("SCREEN", "STUDY1");
+            bundle.putString("SCREEN", CommConstants.screen_study1);
 
             Intent intent = new Intent(getApplication(), HelpActivity.class);
             intent.putExtras(bundle);
@@ -199,6 +191,7 @@ public class Study1Activity extends AppCompatActivity implements View.OnClickLis
 
 
 class Study1CursorAdapter extends CursorAdapter {
+    int fontSize = 0;
     private String mWordMean;
     private Activity mActivity;
     private SQLiteDatabase mDb;
@@ -228,6 +221,8 @@ class Study1CursorAdapter extends CursorAdapter {
         for ( int i = 0; i < isItemView.length; i++ ) {
             isItemView[i] = false;
         }
+
+        fontSize = Integer.parseInt( DicUtils.getPreferencesValue( context, CommConstants.preferences_font ) );
     }
 
     @Override
@@ -238,7 +233,7 @@ class Study1CursorAdapter extends CursorAdapter {
 
         //암기 체크
         ViewHolder viewHolder = new ViewHolder();
-        viewHolder.memorizationCheck = (CheckBox) view.findViewById(R.id.my_c_s1i_cb_memorization);
+        viewHolder.memorizationCheck = (CheckBox) view.findViewById(R.id.my_cb_memorization);
         viewHolder.memorizationCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,7 +241,7 @@ class Study1CursorAdapter extends CursorAdapter {
 
                 StringBuffer sql = new StringBuffer();
                 sql.append("UPDATE DIC_VOC " + CommConstants.sqlCR);
-                sql.append("   SET MEMORIZATION = '" + ( ((CheckBox)v.findViewById(R.id.my_c_s1i_cb_memorization)).isChecked() ? "Y" : "N") + "'" + CommConstants.sqlCR);
+                sql.append("   SET MEMORIZATION = '" + ( ((CheckBox)v.findViewById(R.id.my_cb_memorization)).isChecked() ? "Y" : "N") + "'" + CommConstants.sqlCR);
                 sql.append(" WHERE ENTRY_ID = '" + params[0] + "' " + CommConstants.sqlCR);
                 mDb.execSQL(sql.toString());
 
@@ -322,16 +317,16 @@ class Study1CursorAdapter extends CursorAdapter {
         viewHolder.seq = cursor.getString(cursor.getColumnIndexOrThrow("SEQ"));
         viewHolder.position = cursor.getPosition();
 
-        ((TextView) view.findViewById(R.id.my_c_s1i_tv_question)).setText(cursor.getString(cursor.getColumnIndexOrThrow("QUESTION")));
+        ((TextView) view.findViewById(R.id.my_tv_question)).setText(cursor.getString(cursor.getColumnIndexOrThrow("QUESTION")));
         if ( isItemView[cursor.getPosition()] ) {
-            ((TextView) view.findViewById(R.id.my_c_s1i_tv_answer)).setText(cursor.getString(cursor.getColumnIndexOrThrow("ANSWER")));
+            ((TextView) view.findViewById(R.id.my_tv_answer)).setText(cursor.getString(cursor.getColumnIndexOrThrow("ANSWER")));
         } else {
-            ((TextView) view.findViewById(R.id.my_c_s1i_tv_answer)).setText("?");
+            ((TextView) view.findViewById(R.id.my_tv_answer)).setText("?");
         }
 
         //암기 체크박스
         String memorization = cursor.getString(cursor.getColumnIndexOrThrow("MEMORIZATION"));
-        CheckBox cb_memorization = (CheckBox) view.findViewById(R.id.my_c_s1i_cb_memorization);
+        CheckBox cb_memorization = (CheckBox) view.findViewById(R.id.my_cb_memorization);
         if ("Y".equals(memorization)) {
             cb_memorization.setChecked(true);
         } else {
@@ -340,11 +335,15 @@ class Study1CursorAdapter extends CursorAdapter {
 
         //UI 수정
         if ( "WORD".equals(mWordMean) ) {
-            ((TextView) view.findViewById(R.id.my_c_s1i_tv_question)).setTextSize(15);
-            ((TextView) view.findViewById(R.id.my_c_s1i_tv_answer)).setTextSize(13);
+            ((TextView) view.findViewById(R.id.my_tv_question)).setTextSize(15);
+            ((TextView) view.findViewById(R.id.my_tv_answer)).setTextSize(13);
         } else {
-            ((TextView) view.findViewById(R.id.my_c_s1i_tv_question)).setTextSize(13);
-            ((TextView) view.findViewById(R.id.my_c_s1i_tv_answer)).setTextSize(15);
+            ((TextView) view.findViewById(R.id.my_tv_question)).setTextSize(13);
+            ((TextView) view.findViewById(R.id.my_tv_answer)).setTextSize(15);
         }
+
+        //사이즈 설정
+        ((TextView) view.findViewById(R.id.my_tv_question)).setTextSize(fontSize);
+        ((TextView) view.findViewById(R.id.my_tv_answer)).setTextSize(fontSize);
     }
 }

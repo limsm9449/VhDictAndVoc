@@ -157,7 +157,7 @@ class DicCategoryViewCursorAdapter extends CursorAdapter {
                     mActivity.startActivity(intent);
                 } else {
                     Bundle bundle = new Bundle();
-                    bundle.putString("viet", vViewHolder.sentence1);
+                    bundle.putString("foreign", vViewHolder.sentence1);
                     bundle.putString("han", vViewHolder.sentence2);
 
                     Intent intent = new Intent(mActivity.getApplication(), SentenceViewActivity.class);

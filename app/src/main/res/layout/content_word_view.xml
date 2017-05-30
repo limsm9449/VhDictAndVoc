@@ -5,8 +5,14 @@
     android:layout_height="fill_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_word_view"
-    tools:context="com.sleepingbear.vhdictandvoc.DicViewActivity"
-    android:padding="5dp">
+    tools:context="com.sleepingbear.vhdictandvoc.WordViewActivity">
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/my_wv"
+        android:layout_alignParentBottom="false"
+        android:layout_above="@+id/adView" >
+    </WebView>
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,7 +21,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/adView">
+        android:layout_above="@+id/adView"
+        android:id="@+id/my_ll_top">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -28,7 +35,7 @@
                 android:text="Word"
                 android:id="@+id/my_c_wv_tv_word"
                 android:layout_marginLeft="10dp"
-                android:textColor="#e65a5a"
+                android:textColor="@color/my_text_word"
                 android:textSize="15dp"
                 android:textStyle="bold"
                 android:textIsSelectable="true"
@@ -44,7 +51,7 @@
                 android:textAlignment="gravity"
                 android:textSize="13dp"
                 android:textStyle="normal"
-                android:textColor="#424040"
+                android:textColor="@color/my_text_spelling"
                 android:layout_toRightOf="@+id/my_c_wv_tv_word"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/my_c_wv_ib_tts" />
@@ -89,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:text="Mean"
                 android:id="@+id/my_c_wv_tv_mean"
-                android:textColor="#4f8ead"
+                android:textColor="@color/my_text_mean"
                 android:textSize="13dp"
                 android:textIsSelectable="true"
                 android:layout_marginLeft="35dp" />
@@ -99,7 +106,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/my_dividerL"
+            android:background="@color/my_divider"
             android:layout_alignParentTop="true"
             android:layout_above="@+id/my_a_cat_lv_category"
             android:layout_marginTop="5dp" />

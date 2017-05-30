@@ -281,7 +281,7 @@ public class DictionaryFragment extends Fragment implements View.OnClickListener
                 startActivity(intent);
             } else {
                 Bundle bundle = new Bundle();
-                bundle.putString("viet", cur.getString(cur.getColumnIndexOrThrow("SENTENCE1")));
+                bundle.putString("foreign", cur.getString(cur.getColumnIndexOrThrow("SENTENCE1")));
                 bundle.putString("han", cur.getString(cur.getColumnIndexOrThrow("SENTENCE2")));
 
                 Intent intent = new Intent(getActivity().getApplication(), SentenceViewActivity.class);

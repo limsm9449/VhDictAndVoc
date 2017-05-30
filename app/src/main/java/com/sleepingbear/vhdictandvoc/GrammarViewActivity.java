@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 
 public class GrammarViewActivity extends AppCompatActivity {
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +73,26 @@ public class GrammarViewActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // 상단 메뉴 구성
+        getMenuInflater().inflate(R.menu.menu_help, menu);
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
             finish();
+        } else if (id == R.id.action_help) {
+            Bundle bundle = new Bundle();
+            bundle.putString("SCREEN", CommConstants.screen_grammarView);
+
+            Intent intent = new Intent(getApplication(), HelpActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -90,11 +100,14 @@ public class GrammarViewActivity extends AppCompatActivity {
 }
 
 class GrammarViewAdapter extends ArrayAdapter<GrammarViewItem> {
+    int fontSize = 0;
     private ArrayList<GrammarViewItem> items;
 
     public GrammarViewAdapter(Context context, int textViewResourceId, ArrayList<GrammarViewItem> items) {
         super(context, textViewResourceId, items);
         this.items = items;
+
+        fontSize = Integer.parseInt( DicUtils.getPreferencesValue( context, CommConstants.preferences_font ) );
     }
 
     @Override
@@ -125,7 +138,7 @@ class GrammarViewAdapter extends ArrayAdapter<GrammarViewItem> {
                             !"* 뜻".equals(vViewHolder.line1) &&
                             !"* 설명".equals(vViewHolder.line1) ) {
                         Bundle bundle = new Bundle();
-                        bundle.putString("viet", vViewHolder.line1);
+                        bundle.putString("foreign", vViewHolder.line1);
                         bundle.putString("han", vViewHolder.line2);
 
                         Intent intent = new Intent(getContext(), SentenceViewActivity.class);
@@ -136,6 +149,10 @@ class GrammarViewAdapter extends ArrayAdapter<GrammarViewItem> {
                 }
             });
         }
+
+        //사이즈 설정
+        ((TextView) v.findViewById(R.id.my_c_gvi_tv_line1)).setTextSize(fontSize);
+        ((TextView) v.findViewById(R.id.my_c_gvi_tv_line2)).setTextSize(fontSize);
 
         return v;
     }

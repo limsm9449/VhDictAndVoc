@@ -153,7 +153,7 @@ public class VocabularyActivity extends AppCompatActivity implements View.OnClic
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 DicDb.delDicVoc(db, entryId, kind);
-                                DicUtils.writeInfoToFile(getApplicationContext(), "MYWORD_DELETE" + ":" + kind + ":" + entryId);
+                                //DicUtils.writeInfoToFile(getApplicationContext(), "MYWORD_DELETE" + ":" + kind + ":" + entryId);
 
                                 adapter.dataChange();
 
@@ -275,7 +275,7 @@ class VocabularyCursorAdapter extends CursorAdapter {
                 DicDb.updMemory(mDb, entryId, (((CheckBox) v.findViewById(R.id.my_c_vi_cb_memorization)).isChecked() ? "Y" : "N"));
 
                 //기록...
-                DicUtils.writeInfoToFile(context, "MEMORY" + ":" + entryId + ":" + (((CheckBox) v.findViewById(R.id.my_c_vi_cb_memorization)).isChecked() ? "Y" : "N"));
+                //DicUtils.writeInfoToFile(context, "MEMORY" + ":" + entryId + ":" + (((CheckBox) v.findViewById(R.id.my_c_vi_cb_memorization)).isChecked() ? "Y" : "N"));
 
                 dataChange();
             }
