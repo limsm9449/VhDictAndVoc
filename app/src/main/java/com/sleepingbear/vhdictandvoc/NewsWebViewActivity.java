@@ -142,17 +142,6 @@ fn("ta-justify");
                 },
                 "$('h1.article-title').text()",
                 "$('div#aka_divfirst p').text()"));
-        enUrls.add(new NewsVo("E" + idx++, "Yan News","http://www.yan.vn/",
-                new String[]{
-                        "$('h1.title')" + js1 + "$" + js2,
-                        "$('div#contentBody p')" + js1 + "$" + js2
-                },
-                new String[]{
-                        "$('div#adsBottomBanner').html('');",
-                        "$('div#mostViewVideo').html('');"
-                },
-                "$('h1.title').text()",
-                "$('div#contentBody p').text()"));
         enUrls.add(new NewsVo("E" + idx++, "Vietnam News express","http://vnexpress.net/",
                 new String[]{
                         "$('div.title_news h1')" + js1 + "$" + js2,
@@ -173,59 +162,6 @@ fn("ta-justify");
                 },
                 "jQuery('div.article-detail h1').text()",
                 "jQuery('p').text()"));
-        enUrls.add(new NewsVo("E" + idx++, "- Vietnam Economic Times","http://m.vneconomy.vn/",
-                new String[]{
-                        "$('h1.h1titleheaderbvt')" + js1 + "$" + js2,
-                        "$('h2.h2titleheaderbvt')" + js1 + "$" + js2,
-                        "$('div.detailsbaiviet div')" + js1 + "$" + js2
-                },
-                new String[]{
-
-                },
-                "$('h1.h1titleheaderbvt').text()",
-                "$('div.detailsbaiviet').text()"));
-        enUrls.add(new NewsVo("E" + idx++, "Life Style Magazine (Dep)","http://m.dep.com.vn/",
-                new String[]{
-                        "$('div.title_news p')" + js1 + "$" + js2,
-                        "$('div.sapo p')" + js1 + "$" + js2,
-                        "$('div.content p')" + js1 + "$" + js2
-                },
-                new String[]{
-
-                },
-                "$('div.title_news p').text()",
-                "$('div.content p').text()"));
-        enUrls.add(new NewsVo("E" + idx++, "- (jquery 사용 안함) Kinh te Saigon - 경제주간지","http://mobile.thesaigontimes.vn/",
-                new String[]{
-                        "jQuery('span.Title')" + js1 + "jQuery" + js2,
-                        "jQuery('span.Content p')" + js1 + "jQuery" + js2
-                },
-                new String[]{
-
-                },
-                "jQuery('span.Title').text()",
-                "jQuery('span.Content p').text()"));
-        enUrls.add(new NewsVo("E" + idx++, "- Vietnam Television - 라디오/TV","http://vtv.vn",
-                new String[]{
-                        "$('h1.title_detail')" + js1 + "$" + js2,
-                        "$('h2.sapo')" + js1 + "$" + js2,
-                        "$('div.ta-justify p')" + js1 + "$" + js2
-                },
-                new String[]{
-
-                },
-                "$('h1.title_detail').text()",
-                "$('div.ta-justify p').text()"));
-        enUrls.add(new NewsVo("E" + idx++, "- Life & Health Newspaper","http://m.suckhoedoisong.vn",
-                new String[]{
-                        "$('h1.title_detail')" + js1 + "$" + js2,
-                        "$('div.sapo_detail')" + js1 + "$" + js2,
-                        "$('div#content_detail_news p')" + js1 + "$" + js2
-                },
-                new String[]{
-                },
-                "$('h1.title_detail').text()",
-                "$('div#content_detail_news p').text()"));
 
         String currUrl = "";
         param = getIntent().getExtras();
@@ -446,7 +382,7 @@ fn("ta-justify");
                 webView.loadUrl("javascript:window.android.action('SENTENCE', window.getSelection().toString())");
 
                 break;
-            /*case R.id.action_tts_all:
+            case R.id.action_tts_all:
                 webView.loadUrl("javascript:window.android.action('TTS', " + currItem.getBodyClass() + ")");
 
                 break;
@@ -454,7 +390,6 @@ fn("ta-justify");
                 webView.loadUrl("javascript:window.android.action('TTS', window.getSelection().toString())");
 
                 break;
-                */
             default:
                 // ...
                 break;

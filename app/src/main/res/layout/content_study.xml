@@ -26,7 +26,8 @@
                 android:text="단어장"
                 android:id="@+id/my_f_stu_tv_vockind"
                 android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true"
+                android:textSize="16sp" />
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -46,14 +47,6 @@
             android:layout_below="@+id/my_f_stu_rl_1"
             android:layout_marginTop="10dp">
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="학습 종류"
-                android:id="@+id/my_f_stu_tv_studykind"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true" />
-
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -63,6 +56,16 @@
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentLeft="false"
                 android:layout_toRightOf="@+id/my_f_stu_tv_studykind" />
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="학습 종류"
+                android:id="@+id/my_f_stu_tv_studykind"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textSize="16sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -78,7 +81,8 @@
                 android:text="암기 여부"
                 android:id="@+id/my_f_stu_tv_memorization"
                 android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true"
+                android:textSize="16sp" />
 
             <RadioGroup
                 android:layout_width="120dp"

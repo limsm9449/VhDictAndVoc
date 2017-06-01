@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#829cd1</color>
+    <color name="colorPrimary">#70ac7d</color>
     <color name="colorPrimaryDark">#d9af52</color>
     <color name="colorAccent">#FF4081</color>
     <color name="textColorPrimary">#FFFFFF</color>
 
     <color name="my_button_outline">#192c53</color>
-    <color name="my_button_pressed">#8ea6d7</color>
-    <color name="my_button_nonpressed">#677da9</color>
+    <color name="my_button_pressed">#70ac7d</color>
+    <color name="my_button_nonpressed">#517b5a</color>
 
     <color name="my_divider">#f17116</color>
 

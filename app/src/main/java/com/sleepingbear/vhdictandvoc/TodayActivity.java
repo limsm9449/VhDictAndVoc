@@ -150,7 +150,7 @@ public class TodayActivity extends AppCompatActivity {
             onBackPressed();
         } else if (id == R.id.action_help) {
             Bundle bundle = new Bundle();
-            bundle.putString("SCREEN", CommConstants.screen_patternView);
+            bundle.putString("SCREEN", CommConstants.screen_today);
 
             Intent intent = new Intent(getApplication(), HelpActivity.class);
             intent.putExtras(bundle);

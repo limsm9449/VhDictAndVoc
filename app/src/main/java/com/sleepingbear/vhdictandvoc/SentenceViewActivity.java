@@ -139,6 +139,7 @@ public class SentenceViewActivity extends AppCompatActivity implements View.OnCl
         while ( wordCursor.moveToNext() ) {
             words.put(wordCursor.getString(wordCursor.getColumnIndexOrThrow("WORD")), wordCursor.getString(wordCursor.getColumnIndexOrThrow("SPELLING")));
         }
+        splitStr = DicUtils.sentenceSplit(notHan.toLowerCase());
         for ( int m = 0; m < splitStr.length; m++ ) {
             if ( " ".equals(splitStr[m]) || "".equals(splitStr[m]) ) {
                 continue;

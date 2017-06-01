@@ -182,6 +182,10 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(this.getApplication(), Study5Activity.class);
                 intent.putExtras(bundle);
                 this.startActivity(intent);
+            } else if ( mStudyKind == CommConstants.studyKind6 ) {
+                Intent intent = new Intent(this.getApplication(), Study6Activity.class);
+                intent.putExtras(bundle);
+                this.startActivity(intent);
             }
         }
     }

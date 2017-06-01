@@ -51,14 +51,8 @@ public class NewsActivity extends AppCompatActivity {
         items.add(new NewsVo("E" + idx++, "Youth Newspaper"));
         items.add(new NewsVo("E" + idx++, "Nhan Dan Newspaper"));
         items.add(new NewsVo("E" + idx++, "Lao Dong Newspaper"));
-        items.add(new NewsVo("E" + idx++, "Yan News ---"));
         items.add(new NewsVo("E" + idx++, "Vietnam News express"));
         items.add(new NewsVo("E" + idx++, "Vietnam.net"));
-        items.add(new NewsVo("E" + idx++, "Vietnam Economic Times"));
-        items.add(new NewsVo("E" + idx++, "Life Style Magazine (Dep)"));
-        items.add(new NewsVo("E" + idx++, "Kinh te Saigon"));
-        items.add(new NewsVo("E" + idx++, "Vietnam Television"));
-        items.add(new NewsVo("E" + idx++, "Life & Health Newspaper"));
 
         adapter = new NewsAdapter(getApplicationContext(), 0, items);
         listView.setAdapter(adapter);

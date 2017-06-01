@@ -49,10 +49,6 @@
             android:label="@string/title_activity_vocabulary"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DicCategoryViewActivity"
-            android:label="@string/title_activity_dic_category_view"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".SentenceViewActivity"
             android:label="@string/title_activity_sentence_view"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -61,16 +57,12 @@
             android:label="@string/title_activity_study5"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".WebViewActivity"
-            android:label="@string/title_activity_web_view"
+            android:name=".Study6Activity"
+            android:label="@string/title_activity_study6"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HelpActivity"
             android:label="@string/title_activity_help"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".DicCategoryActivity"
-            android:label="@string/title_activity_dic_category"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".GrammarActivity"
@@ -89,20 +81,14 @@
             android:label="@string/title_activity_patch"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MySampleActivity"
-            android:label="@string/title_activity_my_sample"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".DictionaryActivity"
             android:label="@string/title_activity_dictionary"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <service android:name=".MySpeechService">
             <intent-filter>
                 <action android:name="com.sleepingbear.vhdictandvoc.MySpeechService" />
             </intent-filter>
         </service>
-
         <activity
             android:name=".VocabularyNoteActivity"
             android:label="@string/title_activity_vocabulary_note"

@@ -13,11 +13,11 @@
         <Preference
             android:key="key_backup"
             android:title="백업"
-            android:summary="단어장, My 회화, 학습 회화 데이타를 english 디렉토리에 백업합니다."/>
+            android:summary="단어장, My 회화, 학습 회화 데이타를 vhdictandvoc 디렉토리에 백업합니다."/>
         <Preference
             android:key="key_recovery"
             android:title="복구"
-            android:summary="english 디렉토리에서 단어장, My 회화, 학습 회화 데이타를 복구합니다."/>
+            android:summary="vhdictandvoc 디렉토리에서 단어장, My 회화, 학습 회화 데이타를 복구합니다."/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="초기화">

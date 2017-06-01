@@ -21,22 +21,18 @@
 
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_word_view">WordViewActivity</string>
     <string name="title_activity_study2">Study2Activity</string>
     <string name="title_activity_study4">Study4Activity</string>
     <string name="title_activity_vocabulary">VocabularyActivity</string>
-    <string name="title_activity_dic_category_view">DicKindActivity</string>
     <string name="title_activity_sentence_view">SentenceViewActivity</string>
     <string name="title_activity_study5">Study5Activity</string>
+    <string name="title_activity_study6">Study6Activity</string>
     <string name="title_activity_web_view">베트남 사이트</string>
     <string name="title_activity_help">도움말</string>
-    <string name="title_activity_dic_category">DicCategoryActivity</string>
-    <string name="title_activity_grammar">GrammarActivity</string>
-    <string name="title_activity_grammar_view">GrammarViewActivity</string>
-    <string name="title_activity_ad">AdActivity</string>
-    <string name="title_activity_patch">PatchActivity</string>
-    <string name="title_activity_my_sample">MySampleActivity</string>
+    <string name="title_activity_grammar">문법</string>
+    <string name="title_activity_grammar_view">문법 상세</string>
+    <string name="title_activity_patch">패치 내역</string>
     <string name="title_activity_settings">환경 설정</string>
     <string name="title_activity_vocabulary_note">단어장</string>
     <string name="title_activity_vocabulary_note_view">단어장 상세</string>
@@ -50,15 +46,15 @@
     <string name="title_activity_conversation_note">회화 노트</string>
     <string name="title_activity_conversation_note_study">회화 학습</string>
     <string name="title_activity_web_translate">번역</string>
-    <string name="title_activity_conversation_note_view">ConversationNoteViewActivity</string>
+    <string name="title_activity_conversation_note_view">회화노트 상세</string>
     <string name="title_activity_news">베트남 뉴스</string>
     <string name="title_activity_news_click_word">뉴스 클릭 단어</string>
     <string name="title_activity_news_web_view">뉴스</string>
     <string name="title_activity_pattern">회화패턴</string>
     <string name="title_activity_pattern_view">회화패턴 예제</string>
     <string name="title_activity_today">오늘의 단어</string>
+    <string name="title_activity_category">카테고리별</string>
+    <string name="title_activity_category_view">카테고리별 상세</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-3860766380986792/1647308662</string>
-    <string name="title_activity_category">CategoryActivity</string>
-    <string name="title_activity_category_view">CategoryViewActivity</string>
 </resources>

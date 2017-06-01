@@ -36,17 +36,7 @@
         <item>카드형 학습</item>
         <item>카드형 OX 학습</item>
         <item>카드형 4지선다 학습</item>
-    </string-array>
-
-    <string-array name="url">
-        <item>http://us.24h.com.vn/</item>
-        <item>http://vietnamnet.vn/</item>
-        <item>http://vnexpress.net/</item>
-    </string-array>
-    <string-array name="urlName">
-        <item>24h</item>
-        <item>vietnamnet</item>
-        <item>vnexpress</item>
+        <item>카드형 4지선다 TTS 학습</item>
     </string-array>
 
     <string-array name="fontSize">

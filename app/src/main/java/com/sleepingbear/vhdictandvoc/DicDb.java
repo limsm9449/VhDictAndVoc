@@ -249,25 +249,6 @@ public class DicDb {
         db.execSQL(sql.toString());
     }
 
-    /*
-    public static void insDicVoc(SQLiteDatabase db, String entryId, String kind, String insDate) {
-        StringBuffer sql = new StringBuffer();
-        sql.append("DELETE FROM DIC_VOC " + CommConstants.sqlCR);
-        sql.append(" WHERE KIND = '" + kind + "'" + CommConstants.sqlCR);
-        sql.append("   AND ENTRY_ID = '" + entryId + "'" + CommConstants.sqlCR);
-        DicUtils.dicSqlLog(sql.toString());
-        db.execSQL(sql.toString());
-
-        sql.setLength(0);
-        sql.append("INSERT INTO DIC_VOC (KIND, ENTRY_ID, MEMORIZATION,RANDOM_SEQ, INS_DATE) " + CommConstants.sqlCR);
-        sql.append("SELECT '" + kind + "', ENTRY_ID, 'N', RANDOM(), '" + insDate + "' " + CommConstants.sqlCR);
-        sql.append("  FROM DIC " + CommConstants.sqlCR);
-        sql.append(" WHERE ENTRY_ID = '" + entryId + "'" + CommConstants.sqlCR);
-        DicUtils.dicSqlLog(sql.toString());
-        db.execSQL(sql.toString());
-    }
-    */
-
     public static void delDicVoc(SQLiteDatabase db, String entryId, String kind) {
         StringBuffer sql = new StringBuffer();
         sql.append("DELETE FROM DIC_VOC " + CommConstants.sqlCR);
@@ -315,51 +296,6 @@ public class DicDb {
         db.execSQL(sql.toString());
     }
 
-    /**
-     * 단어장 초기화
-     * @param db
-     */
-    /*
-    public static void initVocabulary(SQLiteDatabase db) {
-        StringBuffer sql = new StringBuffer();
-        sql.append("DELETE FROM DIC_VOC" + CommConstants.sqlCR);
-        DicUtils.dicSqlLog(sql.toString());
-        db.execSQL(sql.toString());
-
-        sql.delete(0, sql.length());
-        sql.append("DELETE FROM DIC_CODE" + CommConstants.sqlCR);
-        sql.append(" WHERE CODE_GROUP = 'MY'" + CommConstants.sqlCR);
-        DicUtils.dicSqlLog(sql.toString());
-        db.execSQL(sql.toString());
-
-        sql.delete(0, sql.length());
-        sql.append("INSERT INTO DIC_CODE(CODE_GROUP, CODE, CODE_NAME)" + CommConstants.sqlCR);
-        sql.append("VALUES('MY', 'MY000', 'MY 단어장')" + CommConstants.sqlCR);
-        DicUtils.dicSqlLog(sql.toString());
-        db.execSQL(sql.toString());
-    }
-    */
-
-    /*
-    public static boolean isExistWord(SQLiteDatabase db, String word) {
-        boolean rtn = false;
-        StringBuffer sql = new StringBuffer();
-        sql.append("SELECT COUNT(*) CNT FROM DIC " + CommConstants.sqlCR);
-        sql.append(" WHERE WORD = '" + word + "'" + CommConstants.sqlCR);
-        DicUtils.dicSqlLog(sql.toString());
-
-        Cursor cursor = db.rawQuery(sql.toString(), null);
-        if ( cursor.moveToNext() ) {
-            if ( cursor.getInt(cursor.getColumnIndexOrThrow("CNT")) > 0 ) {
-                rtn = true;
-            }
-        }
-        cursor.close();
-
-        return rtn;
-    }
-    */
-
     public static String getEntryIdForWord(SQLiteDatabase db, String word) {
         String rtn = "";
         StringBuffer sql = new StringBuffer();
@@ -381,8 +317,10 @@ public class DicDb {
         boolean rtn = false;
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT COUNT(*) CNT  " + CommConstants.sqlCR);
-        sql.append("  FROM DIC_MY_SAMPLE " + CommConstants.sqlCR);
-        sql.append(" WHERE SENTENCE1 = '" + sentence + "'" + CommConstants.sqlCR);
+        sql.append("  FROM DIC_NOTE A, DIC_SAMPLE B " + CommConstants.sqlCR);
+        sql.append(" WHERE A.SAMPLE_SEQ = B.SEQ " + CommConstants.sqlCR);
+        sql.append("   AND A.CODE IN (SELECT CODE FROM DIC_CODE WHERE CODE_GROUP = 'C01')" + CommConstants.sqlCR);
+        sql.append("   AND B.SENTENCE1 = '" + sentence + "'" + CommConstants.sqlCR);
         DicUtils.dicSqlLog(sql.toString());
 
         Cursor cursor = db.rawQuery(sql.toString(), null);

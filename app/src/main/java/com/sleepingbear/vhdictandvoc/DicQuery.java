@@ -38,18 +38,6 @@ public class DicQuery {
         return sql.toString();
     }
 
-    public static String getDicForWord(String word) {
-        StringBuffer sql = new StringBuffer();
-        sql.append("SELECT A.*, " + CommConstants.sqlCR);
-        sql.append("       SEQ _id, " + CommConstants.sqlCR);
-        sql.append("       (SELECT COUNT(*) FROM DIC_VOC WHERE ENTRY_ID = A.ENTRY_ID) MY_VOC " + CommConstants.sqlCR);
-        sql.append("  FROM DIC A " + CommConstants.sqlCR);
-        sql.append(" WHERE WORD = '" + word.toLowerCase().replaceAll("'", " ") + "'" + CommConstants.sqlCR);
-
-        DicUtils.dicSqlLog(sql.toString());
-
-        return sql.toString();
-    }
 
     public static String getVocCategory() {
         StringBuffer sql = new StringBuffer();
@@ -196,22 +184,6 @@ public class DicQuery {
         return sql.toString();
     }
 
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-    public static String getVocabularyActivityContextMenu() {
-        StringBuffer sql = new StringBuffer();
-
-        sql.append("SELECT 1 _id, 1 ORD, '-' KIND, '단어 보기' KIND_NAME" + CommConstants.sqlCR);
-        sql.append(" UNION" + CommConstants.sqlCR);
-        sql.append("SELECT 2 _id, 2 ORD, '-' KIND, '삭제' KIND_NAME" + CommConstants.sqlCR);
-
-        DicUtils.dicSqlLog(sql.toString());
-
-        return sql.toString();
-    }
-    */
-
     public static String getVocabularyCategory() {
         StringBuffer sql = new StringBuffer();
 
@@ -290,75 +262,6 @@ public class DicQuery {
         return sql.toString();
     }
 
-    public static String getMainCategoryCount() {
-        StringBuffer sql = new StringBuffer();
-
-        sql.append("SELECT 1 _id, CODE KIND, CODE_NAME KIND_NAME" + CommConstants.sqlCR);
-        sql.append("  FROM DIC_CODE" + CommConstants.sqlCR);
-        sql.append(" WHERE CODE_GROUP = 'GRP'" + CommConstants.sqlCR);
-        sql.append("   AND CODE <> '" + CommConstants.vocabularyCode + "'" + CommConstants.sqlCR);
-        sql.append(" ORDER BY 3" + CommConstants.sqlCR);
-
-        DicUtils.dicSqlLog(sql.toString());
-
-        return sql.toString();
-    }
-
-    public static String getSubCategoryCount(String codeGroup) {
-        StringBuffer sql = new StringBuffer();
-
-        sql.append("SELECT 1 _id, 2 ORD, A.CODE KIND, A.CODE_NAME KIND_NAME, " + CommConstants.sqlCR);
-        sql.append("            COALESCE(B.CNT,0) W_CNT,  " + CommConstants.sqlCR);
-        sql.append("            COALESCE(C.CNT,0) S_CNT " + CommConstants.sqlCR);
-        sql.append("  FROM DIC_CODE A" + CommConstants.sqlCR);
-        sql.append("       LEFT OUTER JOIN ( SELECT CODE, COUNT(*) CNT FROM DIC_CATEGORY_WORD GROUP BY CODE ) B ON ( B.CODE = A.CODE )" + CommConstants.sqlCR);
-        sql.append("       LEFT OUTER JOIN ( SELECT CODE, COUNT(*) CNT FROM DIC_CATEGORY_SENT GROUP BY CODE ) C ON ( C.CODE = A.CODE )" + CommConstants.sqlCR);
-        sql.append(" WHERE A.CODE_GROUP = '" + codeGroup + "'" + CommConstants.sqlCR);
-        sql.append(" ORDER BY 1,4" + CommConstants.sqlCR);
-
-        DicUtils.dicSqlLog(sql.toString());
-
-        return sql.toString();
-    }
-
-    public static String getMyDic() {
-        StringBuffer sql = new StringBuffer();
-
-        sql.append("SELECT A.*, B.WORD " + CommConstants.sqlCR);
-        sql.append(" FROM DIC_VOC A, DIC B" + CommConstants.sqlCR);
-        sql.append(" WHERE A.ENTRY_ID = B.ENTRY_ID" + CommConstants.sqlCR);
-
-
-        DicUtils.dicSqlLog(sql.toString());
-
-        return sql.toString();
-    }
-
-    public static String getMyMemoryDic() {
-        StringBuffer sql = new StringBuffer();
-
-        sql.append("SELECT A.*, B.WORD " + CommConstants.sqlCR);
-        sql.append("  FROM DIC_VOC A, DIC B" + CommConstants.sqlCR);
-        sql.append(" WHERE A.ENTRY_ID = B.ENTRY_ID" + CommConstants.sqlCR);
-        sql.append("   AND A.MEMORIZATION = 'Y'" + CommConstants.sqlCR);
-
-        DicUtils.dicSqlLog(sql.toString());
-
-        return sql.toString();
-    }
-
-    public static String getToday() {
-        StringBuffer sql = new StringBuffer();
-
-        sql.append("SELECT A.TODAY, B.WORD, B.ENTRY_ID " + CommConstants.sqlCR);
-        sql.append("  FROM DIC_TODAY A, DIC B" + CommConstants.sqlCR);
-        sql.append(" WHERE A.ENTRY_ID = B.ENTRY_ID" + CommConstants.sqlCR);
-
-        DicUtils.dicSqlLog(sql.toString());
-
-        return sql.toString();
-    }
-
     public static String getVocabularyCount() {
         StringBuffer sql = new StringBuffer();
 
@@ -394,18 +297,6 @@ public class DicQuery {
         return sql.toString();
     }
 
-    public static String getMySample() {
-        StringBuffer sql = new StringBuffer();
-
-        sql.append("SELECT SEQ _id, TODAY, SENTENCE1, SENTENCE2" + CommConstants.sqlCR);
-        sql.append("  FROM DIC_MY_SAMPLE" + CommConstants.sqlCR);
-        sql.append(" ORDER BY TODAY DESC, SENTENCE1" + CommConstants.sqlCR);
-
-        DicUtils.dicSqlLog(sql.toString());
-
-        return sql.toString();
-    }
-
     public static String getPatternList() {
         StringBuffer sql = new StringBuffer();
 
@@ -434,17 +325,6 @@ public class DicQuery {
         sql.append("SELECT SEQ _id, SEQ, CATEGORY, SAMPLES" + CommConstants.sqlCR);
         sql.append("  FROM DIC_CATEGORY" + CommConstants.sqlCR);
         sql.append(" WHERE KIND = '" + kind + "'" + CommConstants.sqlCR);
-        DicUtils.dicSqlLog(sql.toString());
-
-        return sql.toString();
-    }
-
-    public static String getCategorySampleList(String categorySeq) {
-        StringBuffer sql = new StringBuffer();
-
-        sql.append("SELECT  SAMPLES" + CommConstants.sqlCR);
-        sql.append("FROM    DIC_CATEGORY" + CommConstants.sqlCR);
-        sql.append("WHERE   SEQ = '" + categorySeq + "'" + CommConstants.sqlCR);
         DicUtils.dicSqlLog(sql.toString());
 
         return sql.toString();
@@ -620,12 +500,13 @@ public class DicQuery {
 
         sql.append("SELECT SEQ _id, SEQ, SENTENCE1, SENTENCE2" + CommConstants.sqlCR);
         sql.append("  FROM DIC_SAMPLE" + CommConstants.sqlCR);
+        sql.append(" WHERE CONVERSATION_YN = 'Y' " + CommConstants.sqlCR);
         if ( difficult == 1) {
-            sql.append("  WHERE WORD_CNT < 6" + CommConstants.sqlCR);
+            sql.append("  AND WORD_CNT < 7" + CommConstants.sqlCR);
         } else if ( difficult == 2) {
-            sql.append("  WHERE WORD_CNT BETWEEN 6 AND 9" + CommConstants.sqlCR);
+            sql.append("  AND WORD_CNT BETWEEN 7 AND 10" + CommConstants.sqlCR);
         } else {
-            sql.append("  WHERE WORD_CNT > 9" + CommConstants.sqlCR);
+            sql.append("  AND WORD_CNT > 10" + CommConstants.sqlCR);
         }
         sql.append(" ORDER BY RANDOM()" + CommConstants.sqlCR);
         sql.append(" LIMIT 1000" + CommConstants.sqlCR);

@@ -231,6 +231,7 @@ public class DicUtils {
             DicDb.initConversationNote(db);
             DicDb.initVocabulary(db);
             DicDb.initDicClickWord(db);
+            DicDb.initHistory(db);
 
             if ( "".equals(fileName) ) {
                 fis = ctx.openFileInput(CommConstants.infoFileName);
