@@ -676,10 +676,10 @@ fn("ta-justify");
                 public void run() {
                     meanRl.setVisibility(View.VISIBLE);
 
-                    clickWord = arg;
+                    clickWord = arg.replaceAll("[,.]", "");
 
-                    HashMap info = DicDb.getMean(mDb, arg);
-                    mean.setText(arg + " " + DicUtils.getString((String)info.get("SPELLING")) + " : " + DicUtils.getString((String)info.get("MEAN")));
+                    HashMap info = DicDb.getMean(mDb, clickWord);
+                    mean.setText(clickWord + " " + DicUtils.getString((String)info.get("SPELLING")) + " : " + DicUtils.getString((String)info.get("MEAN")));
 
                     entryId = DicUtils.getString((String)info.get("ENTRY_ID"));
                     if ( !"".equals(entryId) ) {

@@ -567,7 +567,7 @@ public class Study6Activity extends AppCompatActivity implements View.OnClickLis
         Locale loc = new Locale("en");
 
         if (status == TextToSpeech.SUCCESS) {
-            int result = myTTS.setLanguage(Locale.ENGLISH);
+            int result = myTTS.setLanguage(new Locale("vi", "VN"));
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "This Language is not supported");
             } else {
