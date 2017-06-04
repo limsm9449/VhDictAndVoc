@@ -73,24 +73,7 @@ public class TodayActivity extends AppCompatActivity {
         Cursor cCursor = db.rawQuery(sql.toString(), null);
         if ( cCursor.moveToNext() ) {
             if ( cCursor.getInt(cCursor.getColumnIndexOrThrow("CNT")) == 0 ) {
-                sql.delete(0, sql.length());
-                sql.append("SELECT * FROM (" + CommConstants.sqlCR);
-                sql.append("SELECT ENTRY_ID, WORD, RANDOM() RND" + CommConstants.sqlCR);
-                sql.append("  FROM DIC " + CommConstants.sqlCR);
-                sql.append(" WHERE KIND = 'VH'" + CommConstants.sqlCR);
-                sql.append("   AND ENTRY_ID NOT IN ( SELECT ENTRY_ID FROM DIC_TODAY ) " + CommConstants.sqlCR);
-                sql.append(" ) ORDER BY RND " + CommConstants.sqlCR);
-                Cursor todayCursor = db.rawQuery(sql.toString(), null);
-                int cnt = 0;
-                while ( todayCursor.moveToNext() ) {
-                    cnt++;
-                    DicDb.insToday(db, todayCursor.getString(todayCursor.getColumnIndexOrThrow("ENTRY_ID")), today);
-
-                    if ( cnt == 10 ) {
-                        break;
-                    }
-                }
-                todayCursor.close();
+                DicDb.insToday10(db, today);
             }
         }
         cCursor.close();

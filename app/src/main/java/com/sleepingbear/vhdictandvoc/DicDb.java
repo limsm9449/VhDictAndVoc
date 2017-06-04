@@ -490,21 +490,36 @@ public class DicDb {
         return rtn;
     }
 
-    public static String getSpelling(SQLiteDatabase db, String word) {
-        String spelling = "";
+    public static HashMap getWordsInfo(SQLiteDatabase db, String words) {
+        HashMap hm = new HashMap();
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT SPELLING" + CommConstants.sqlCR);
+        sql.append("SELECT WORD, SPELLING, ENTRY_ID" + CommConstants.sqlCR);
         sql.append("  FROM DIC " + CommConstants.sqlCR);
-        sql.append(" WHERE WORD = '" + word.toLowerCase().replaceAll("'", " ") + "'" + CommConstants.sqlCR);
+        sql.append(" WHERE WORD IN ('" + words.toLowerCase().replaceAll("'", " ").replaceAll(",", "','") + "')" + CommConstants.sqlCR);
         sql.append("ORDER  BY WORD " + CommConstants.sqlCR);
         DicUtils.dicSqlLog(sql.toString());
 
         Cursor cursor = db.rawQuery(sql.toString(), null);
-        if ( cursor.moveToNext() ) {
-            spelling =  cursor.getString(cursor.getColumnIndexOrThrow("SPELLING"));
+        while ( cursor.moveToNext() ) {
+            hm.put(cursor.getString(cursor.getColumnIndexOrThrow("WORD")) + "_SPELLING", cursor.getString(cursor.getColumnIndexOrThrow("SPELLING")));
+            hm.put(cursor.getString(cursor.getColumnIndexOrThrow("WORD")) + "_ENTRY_ID", cursor.getString(cursor.getColumnIndexOrThrow("ENTRY_ID")));
         }
         cursor.close();
 
-        return spelling;
+        return hm;
+    }
+
+    public static void insToday10(SQLiteDatabase db, String today) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("INSERT INTO DIC_TODAY(TODAY, ENTRY_ID) " + CommConstants.sqlCR);
+        sql.append("SELECT '" + today + "', ENTRY_ID FROM (" + CommConstants.sqlCR);
+        sql.append("SELECT ENTRY_ID, WORD, RANDOM() RND" + CommConstants.sqlCR);
+        sql.append("  FROM DIC " + CommConstants.sqlCR);
+        sql.append(" WHERE KIND = 'VH'" + CommConstants.sqlCR);
+        sql.append("   AND ENTRY_ID NOT IN ( SELECT ENTRY_ID FROM DIC_TODAY ) " + CommConstants.sqlCR);
+        sql.append(" ) ORDER BY RND LIMIT 10" + CommConstants.sqlCR);
+
+        DicUtils.dicSqlLog(sql.toString());
+        db.execSQL(sql.toString());
     }
 }

@@ -59,14 +59,22 @@ public class CategoryViewActivity extends AppCompatActivity {
 
         ArrayList<CategoryViewItem> al = new ArrayList<CategoryViewItem>();
         String[] samples = b.getString("SAMPLES").split("\n");
+        String words = "";
         for ( int i = 0; i < samples.length; i++ ) {
             if ( !"".equals(samples[i]) ) {
                 String[] row = samples[i].split(":");
-                HashMap word = DicDb.getMean(db, row[0].trim());
+                words += ("".equals(words) ? "" : ",") + row[0].trim();
+            }
+        }
+        HashMap wordsInfo = DicDb.getWordsInfo(db, words);
+
+        for ( int i = 0; i < samples.length; i++ ) {
+            if ( !"".equals(samples[i]) ) {
+                String[] row = samples[i].split(":");
                 if (row.length == 1) {
-                    al.add(new CategoryViewItem(row[0].trim(), "", (String)word.get("SPELLING"), (String)word.get("ENTRY_ID")));
+                    al.add(new CategoryViewItem(row[0].trim(), "", (String)wordsInfo.get(row[0].trim() + "_SPELLING"), (String)wordsInfo.get(row[0].trim() + "_ENTRY_ID")));
                 } else if (row.length == 2) {
-                    al.add(new CategoryViewItem(row[0].trim(), row[1].trim(), (String)word.get("SPELLING"), (String)word.get("ENTRY_ID")));
+                    al.add(new CategoryViewItem(row[0].trim(), row[1].trim(), (String)wordsInfo.get(row[0].trim() + "_SPELLING"), (String)wordsInfo.get(row[0].trim() + "_ENTRY_ID")));
                 }
             }
         }
