@@ -141,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(getApplication(), SettingsActivity.class));
 
             return true;
+        } else if (id == R.id.action_no_ad) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.sleepingbear.pvhdictandvoc")));
         }
 
         return super.onOptionsItemSelected(item);
@@ -225,9 +227,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.my_b_voc_study:
                 startActivity(new Intent(getApplication(), StudyActivity.class));
-
                 break;
-
         }
     }
 
