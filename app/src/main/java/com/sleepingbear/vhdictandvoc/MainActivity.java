@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ((Button) findViewById(R.id.my_b_foreign_dic)).setOnClickListener(this);
         ((Button) findViewById(R.id.my_b_dic_history)).setOnClickListener(this);
-        ((Button) findViewById(R.id.my_b_han_dic)).setOnClickListener(this);
 
         ((Button) findViewById(R.id.my_b_web_translate)).setOnClickListener(this);
         ((Button) findViewById(R.id.my_b_web_dic)).setOnClickListener(this);
@@ -163,14 +162,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent dicHistoryIntent = new Intent(getApplication(), DictionaryHistoryActivity.class);
                 dicHistoryIntent.putExtras(bundle);
                 startActivity(dicHistoryIntent);
-
-                break;
-            case R.id.my_b_han_dic:
-                bundle.putString("KIND", CommConstants.dictionaryKind_h);
-
-                Intent hanIntent = new Intent(getApplication(), DictionaryActivity.class);
-                hanIntent.putExtras(bundle);
-                startActivity(hanIntent);
 
                 break;
             case R.id.my_b_web_dic:

@@ -31,7 +31,7 @@
             android:layout_marginBottom="5dp">
 
             <Button
-                android:text="베한 사전"
+                android:text="베트남 사전"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/my_b_foreign_dic"
@@ -40,7 +40,7 @@
                 android:layout_marginRight="3dp" />
 
             <Button
-                android:text="베한 검색\nHistory"
+                android:text="사전 검색\nHistory"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/my_b_dic_history"
@@ -48,15 +48,6 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="3dp" />
-
-            <Button
-                android:text="한베 사전"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/my_b_han_dic"
-                android:background="@drawable/my_button"
-                android:layout_weight="1"
-                android:layout_marginLeft="2dp" />
 
         </LinearLayout>
 

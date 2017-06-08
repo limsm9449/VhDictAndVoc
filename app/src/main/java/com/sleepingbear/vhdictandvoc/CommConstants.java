@@ -12,9 +12,7 @@ public class CommConstants {
     public static String defaultVocabularyCode = "VOC0001";
 
     public static String dictionaryKind_f = "VH";
-    public static String dictionaryKind_f_title = "베한 사전";
     public static String dictionaryKind_h = "HV";
-    public static String dictionaryKind_h_title = "한베 사전";
 
     public static String screen_dictionary = "SCREEN_DICTIONARY";
     public static String screen_dictionaryHistory = "SCREEN_DICTIONARY_HISTORY";
