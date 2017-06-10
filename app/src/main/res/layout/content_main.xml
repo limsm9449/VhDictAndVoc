@@ -36,8 +36,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/my_b_foreign_dic"
                 android:background="@drawable/my_button"
-                android:layout_weight="1"
-                android:layout_marginRight="3dp" />
+                android:layout_weight="1" />
 
             <Button
                 android:text="사전 검색\nHistory"
