@@ -115,11 +115,6 @@ public class ConversationNoteStudyActivity extends AppCompatActivity implements 
             }else {
                 cursor = db.rawQuery(DicQuery.getNoteList(kind), null);
             }
-
-            if ( cursor.getCount() == 1 ) {
-                ((ImageView) this.findViewById(R.id.my_iv_left)).setVisibility(View.GONE);
-                ((ImageView) this.findViewById(R.id.my_iv_right)).setVisibility(View.GONE);
-            }
         }
     }
 
@@ -191,6 +186,10 @@ public class ConversationNoteStudyActivity extends AppCompatActivity implements 
 
                     ((TextView) dialog_layout.findViewById(R.id.my_tv_han)).setText(my_tv_han.getText());
                     ((TextView) dialog_layout.findViewById(R.id.my_tv_foreign)).setText(my_tv_foreign.getText());
+
+                    int fontSize = Integer.parseInt( DicUtils.getPreferencesValue( getApplicationContext(), CommConstants.preferences_font ) );
+                    ((TextView) dialog_layout.findViewById(R.id.my_tv_han)).setTextSize(fontSize);
+                    ((TextView) dialog_layout.findViewById(R.id.my_tv_foreign)).setTextSize(fontSize);
 
                     // 광고 추가
                     PublisherAdView mPublisherAdView = new PublisherAdView(this);
@@ -323,13 +322,13 @@ public class ConversationNoteStudyActivity extends AppCompatActivity implements 
                 btn.setTextColor(Color.rgb(255, 255, 255));
                 btn.setText( DicUtils.getBtnString( foreignArr[i] ) );
                 btn.setAllCaps(false);
-                btn.setTextSize(12);
+                btn.setTextSize(18);
 
                 btn.setLayoutParams((new FlowLayout.LayoutParams(3, 3)));
 
                 btn.setId(i);
                 btn.setTag( DicUtils.getBtnString( foreignArr[i] ) );
-                btn.setGravity(Gravity.LEFT);
+                btn.setGravity(Gravity.TOP);
                 btn.setOnClickListener(this);
                 wordArea.addView(btn);
             }
@@ -398,6 +397,11 @@ public class ConversationNoteStudyActivity extends AppCompatActivity implements 
 
         @Override
         protected void onPostExecute(Void result) {
+            if ( cursor.getCount() == 1 ) {
+                ((ImageView) findViewById(R.id.my_iv_left)).setVisibility(View.GONE);
+                ((ImageView) findViewById(R.id.my_iv_right)).setVisibility(View.GONE);
+            }
+
             cursor.moveToFirst();
             conversationShow();
 
