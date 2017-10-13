@@ -83,11 +83,18 @@
             android:name=".DictionaryActivity"
             android:label="@string/title_activity_dictionary"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <service android:name=".MySpeechService">
             <intent-filter>
                 <action android:name="com.sleepingbear.vhdictandvoc.MySpeechService" />
             </intent-filter>
         </service>
+        <service android:name=".NewsTtsService">
+            <intent-filter>
+                <action android:name="com.sleepingbear.vhdictandvoc.NewsTtsService" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".VocabularyNoteActivity"
             android:label="@string/title_activity_vocabulary_note"
@@ -167,6 +174,18 @@
         <activity
             android:name=".CategoryViewActivity"
             android:label="@string/title_activity_category_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".VslActivity"
+            android:label="@string/title_activity_vsl"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".News2Activity"
+            android:label="@string/title_activity_news2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".News2ViewActivity"
+            android:label="@string/title_activity_news2_view"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

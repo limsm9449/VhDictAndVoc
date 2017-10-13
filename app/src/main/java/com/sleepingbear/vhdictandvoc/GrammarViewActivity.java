@@ -67,9 +67,7 @@ public class GrammarViewActivity extends AppCompatActivity {
         GrammarViewAdapter m_adapter = new GrammarViewAdapter(this, R.layout.content_grammar_view_item, al);
         ((ListView) this.findViewById(R.id.my_c_gv_lv1)).setAdapter(m_adapter);
 
-        AdView av = (AdView)this.findViewById(R.id.adView);
-        AdRequest adRequest = new  AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     @Override

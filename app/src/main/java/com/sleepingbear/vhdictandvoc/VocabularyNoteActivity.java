@@ -104,9 +104,7 @@ public class VocabularyNoteActivity extends AppCompatActivity implements View.On
 
         changeListView();
 
-        AdView av = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     public void changeListView() {
@@ -156,11 +154,11 @@ public class VocabularyNoteActivity extends AppCompatActivity implements View.On
 
             ((TextView) dialog_layout.findViewById(R.id.my_d_category_tv_category)).setText("단어장 관리");
 
-            final EditText et_upd = ((EditText) dialog_layout.findViewById(R.id.my_d_category_et_upd));
+            final EditText et_upd = ((EditText) dialog_layout.findViewById(R.id.my_et_upd));
             et_upd.setText(cur.getString(cur.getColumnIndexOrThrow("KIND_NAME")));
 
-            ((Button) dialog_layout.findViewById(R.id.my_d_category_b_upd)).setTag(cur.getString(cur.getColumnIndexOrThrow("KIND")));
-            ((Button) dialog_layout.findViewById(R.id.my_d_category_b_upd)).setOnClickListener(new View.OnClickListener() {
+            ((Button) dialog_layout.findViewById(R.id.my_b_upd)).setTag(cur.getString(cur.getColumnIndexOrThrow("KIND")));
+            ((Button) dialog_layout.findViewById(R.id.my_b_upd)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if ("".equals(et_upd.getText().toString())) {
@@ -177,8 +175,8 @@ public class VocabularyNoteActivity extends AppCompatActivity implements View.On
                 }
             });
 
-            ((Button) dialog_layout.findViewById(R.id.my_d_category_b_del)).setTag(cur.getString(cur.getColumnIndexOrThrow("KIND")));
-            ((Button) dialog_layout.findViewById(R.id.my_d_category_b_del)).setOnClickListener(new View.OnClickListener() {
+            ((Button) dialog_layout.findViewById(R.id.my_b_del)).setTag(cur.getString(cur.getColumnIndexOrThrow("KIND")));
+            ((Button) dialog_layout.findViewById(R.id.my_b_del)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final String code = (String) v.getTag();
@@ -215,10 +213,10 @@ public class VocabularyNoteActivity extends AppCompatActivity implements View.On
                 }
             });
 
-            final EditText et_saveName = ((EditText) dialog_layout.findViewById(R.id.my_dc_et_voc_name));
+            final EditText et_saveName = ((EditText) dialog_layout.findViewById(R.id.my_et_voc_name));
             et_saveName.setText(cur.getString(cur.getColumnIndexOrThrow("KIND_NAME")));
-            ((Button) dialog_layout.findViewById(R.id.my_dc__b_save)).setTag(cur.getString(cur.getColumnIndexOrThrow("KIND")));
-            ((Button) dialog_layout.findViewById(R.id.my_dc__b_save)).setOnClickListener(new View.OnClickListener() {
+            ((Button) dialog_layout.findViewById(R.id.my_b_download)).setTag(cur.getString(cur.getColumnIndexOrThrow("KIND")));
+            ((Button) dialog_layout.findViewById(R.id.my_b_download)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final String code = (String) v.getTag();
@@ -288,8 +286,8 @@ public class VocabularyNoteActivity extends AppCompatActivity implements View.On
                 }
             });
 
-            ((Button) dialog_layout.findViewById(R.id.my_d_category_b_upload)).setTag(cur.getString(cur.getColumnIndexOrThrow("KIND")));
-            ((Button) dialog_layout.findViewById(R.id.my_d_category_b_upload)).setOnClickListener(new View.OnClickListener() {
+            ((Button) dialog_layout.findViewById(R.id.my_b_upload)).setTag(cur.getString(cur.getColumnIndexOrThrow("KIND")));
+            ((Button) dialog_layout.findViewById(R.id.my_b_upload)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final String code = (String) v.getTag();
@@ -333,12 +331,12 @@ public class VocabularyNoteActivity extends AppCompatActivity implements View.On
                 }
             });
 
-            ((Button) dialog_layout.findViewById(R.id.my_d_category_b_close)).setOnClickListener(new View.OnClickListener() {
-                                                                                                     @Override
-                                                                                                     public void onClick(View v) {
-                                                                                                         alertDialog.dismiss();
-                                                                                                     }
-                                                                                                 }
+            ((Button) dialog_layout.findViewById(R.id.my_b_close)).setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         alertDialog.dismiss();
+                     }
+                 }
             );
 
             alertDialog.setCanceledOnTouchOutside(false);
@@ -397,7 +395,9 @@ class VocabularyNoteCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ((TextView) view.findViewById(R.id.my_tv_pattern)).setText(cursor.getString(cursor.getColumnIndexOrThrow("KIND_NAME")));
-        ((TextView) view.findViewById(R.id.my_tv_cnt)).setText(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("CNT"))));
+        ((TextView) view.findViewById(R.id.my_tv_cnt)).setText(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("CNT"))) +
+                " ( 암기 : " + String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("M_CNT"))) + ", " +
+                " 미암기 : " + String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("UM_CNT"))) + " )");
 
         //사이즈 설정
         ((TextView) view.findViewById(R.id.my_tv_pattern)).setTextSize(fontSize);

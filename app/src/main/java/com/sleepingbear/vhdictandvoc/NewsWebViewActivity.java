@@ -179,9 +179,9 @@ fn("ta-justify");
             DicUtils.dicLog("url param");
 
             if ( currUrl.indexOf("https") > -1 ) {
-                currUrl = "https:\\" + param.getString("url");
+                currUrl = param.getString("url");
             } else {
-                currUrl = "http:\\" + param.getString("url");
+                currUrl = param.getString("url");
             }
         }
 
@@ -240,9 +240,7 @@ fn("ta-justify");
 
         //registerForContextMenu(webView);
 
-        AdView av = (AdView)this.findViewById(R.id.adView);
-        AdRequest adRequest = new  AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
 

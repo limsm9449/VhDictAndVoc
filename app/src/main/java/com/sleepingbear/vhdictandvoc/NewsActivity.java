@@ -48,20 +48,18 @@ public class NewsActivity extends AppCompatActivity {
 
         ArrayList<NewsVo> items = new ArrayList<>();
         int idx = 1;
-        items.add(new NewsVo("E" + idx++, "Youth Newspaper"));
+        items.add(new NewsVo("E" + idx++, "Tuoi Tre Newspaper"));
         items.add(new NewsVo("E" + idx++, "Nhan Dan Newspaper"));
         items.add(new NewsVo("E" + idx++, "Lao Dong Newspaper"));
-        items.add(new NewsVo("E" + idx++, "Vietnam News express"));
-        items.add(new NewsVo("E" + idx++, "Vietnam.net"));
+        items.add(new NewsVo("E" + idx++, "VN Express"));
+        items.add(new NewsVo("E" + idx++, "Vietnam Net"));
 
         adapter = new NewsAdapter(getApplicationContext(), 0, items);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setOnItemClickListener(itemClickListener);
 
-        AdView av = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     @Override

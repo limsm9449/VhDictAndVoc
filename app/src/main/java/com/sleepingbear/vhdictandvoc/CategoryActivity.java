@@ -84,10 +84,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         changeListView();
 
-        AdView av = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        av.loadAd(adRequest);
-
+        DicUtils.setAdView(this);
     }
 
     @Override
@@ -138,6 +135,7 @@ public class CategoryActivity extends AppCompatActivity {
             Cursor cur = (Cursor) adapter.getItem(position);
 
             Bundle bundle = new Bundle();
+            bundle.putString("KIND", cur.getString(cur.getColumnIndexOrThrow("KIND")));
             bundle.putString("CATEGORY", cur.getString(cur.getColumnIndexOrThrow("CATEGORY")));
             bundle.putString("SAMPLES", cur.getString(cur.getColumnIndexOrThrow("SAMPLES")));
 

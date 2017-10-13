@@ -51,10 +51,7 @@ public class NaverConversationActivity extends AppCompatActivity {
 
         changeListView();
 
-        AdView av = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        av.loadAd(adRequest);
-
+        DicUtils.setAdView(this);
     }
 
     @Override

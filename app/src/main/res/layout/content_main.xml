@@ -92,6 +92,16 @@
                 android:layout_marginRight="3dp" />
 
             <Button
+                android:text="베트남 뉴스\nVer.2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/my_b_news2"
+                android:background="@drawable/my_button"
+                android:layout_weight="1"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="3dp" />
+
+            <Button
                 android:text="뉴스 클릭 단어"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -166,23 +176,23 @@
                 android:layout_marginRight="3dp" />
 
             <Button
-                android:text="카테고리별"
+                android:text="VSL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/my_b_category"
+                android:id="@+id/my_b_vsl"
                 android:background="@drawable/my_button"
                 android:layout_weight="1"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="3dp" />
 
             <Button
-                android:text="네이버\n회화"
+                android:text="카테고리별"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/my_b_naver_conv"
+                android:id="@+id/my_b_category"
                 android:background="@drawable/my_button"
                 android:layout_weight="1"
-                android:layout_marginLeft="2dp"/>
+                android:layout_marginLeft="2dp" />
 
         </LinearLayout>
 

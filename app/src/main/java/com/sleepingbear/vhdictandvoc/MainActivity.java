@@ -77,6 +77,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         checkPermission();
 
+        //20일 이전 오늘의 단어 데이타 삭제
+        String delDate = DicUtils.getDelimiterDate(DicUtils.getAddDay(DicUtils.getCurrentDate(), -20), ".");
+        DicDb.delOldToday(db, delDate);
+
+        //5일 이전 뉴스 데이타 삭제
+        delDate = DicUtils.getDelimiterDate(DicUtils.getAddDay(DicUtils.getCurrentDate(), -5), ".");
+        DicDb.delOldNews(db, delDate);
+
+
         ((Button) findViewById(R.id.my_b_foreign_dic)).setOnClickListener(this);
         ((Button) findViewById(R.id.my_b_dic_history)).setOnClickListener(this);
 
@@ -84,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ((Button) findViewById(R.id.my_b_web_dic)).setOnClickListener(this);
 
         ((Button) findViewById(R.id.my_b_news)).setOnClickListener(this);
+        ((Button) findViewById(R.id.my_b_news2)).setOnClickListener(this);
         ((Button) findViewById(R.id.my_b_news_word)).setOnClickListener(this);
 
         ((Button) findViewById(R.id.my_b_conversation_study)).setOnClickListener(this);
@@ -92,16 +102,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ((Button) findViewById(R.id.my_b_conv_note)).setOnClickListener(this);
 
         ((Button) findViewById(R.id.my_b_grammar)).setOnClickListener(this);
+        ((Button) findViewById(R.id.my_b_vsl)).setOnClickListener(this);
         ((Button) findViewById(R.id.my_b_category)).setOnClickListener(this);
-        ((Button) findViewById(R.id.my_b_naver_conv)).setOnClickListener(this);
 
         ((Button) findViewById(R.id.my_b_today)).setOnClickListener(this);
         ((Button) findViewById(R.id.my_b_voc)).setOnClickListener(this);
         ((Button) findViewById(R.id.my_b_voc_study)).setOnClickListener(this);
 
-        AdView av = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     @Override
@@ -182,6 +190,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(newsIntent);
 
                 break;
+            case R.id.my_b_news2:
+                Intent news2Intent = new Intent(getApplication(), News2Activity.class);
+                news2Intent.putExtras(bundle);
+                startActivity(news2Intent);
+
+                break;
             case R.id.my_b_news_word:
                 Intent newClickWordIntent = new Intent(getApplication(), NewsClickWordActivity.class);
                 newClickWordIntent.putExtras(bundle);
@@ -204,8 +218,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.my_b_grammar:
                 startActivity(new Intent(getApplication(), GrammarActivity.class));
                 break;
-            case R.id.my_b_naver_conv:
-                startActivity(new Intent(getApplication(), NaverConversationActivity.class));
+            case R.id.my_b_vsl:
+                startActivity(new Intent(getApplication(), VslActivity.class));
                 break;
             case R.id.my_b_today:
                 startActivity(new Intent(getApplication(), TodayActivity.class));

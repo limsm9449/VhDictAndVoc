@@ -29,6 +29,7 @@ import com.google.android.gms.ads.AdView;
 public class Study3Activity extends AppCompatActivity implements View.OnClickListener {
     private String mVocKind;
     private String mMemorization;
+    private String mSort = "QUESTION ASC";
     private boolean mIsPlay = false;
 
     private String mWordMean = "WORD";
@@ -74,7 +75,11 @@ public class Study3Activity extends AppCompatActivity implements View.OnClickLis
         ((RadioButton) findViewById(R.id.my_a_study3_rb_m_not)).setOnClickListener(this);
         ((RadioButton) findViewById(R.id.my_a_study3_rb_word)).setOnClickListener(this);
         ((RadioButton) findViewById(R.id.my_a_study3_rb_mean)).setOnClickListener(this);
-        ((Button) findViewById(R.id.my_a_study3_b_random)).setOnClickListener(this);
+
+        findViewById(R.id.my_rb_sort_asc).setOnClickListener(this);
+        findViewById(R.id.my_rb_sort_desc).setOnClickListener(this);
+        findViewById(R.id.my_rb_sort_random).setOnClickListener(this);
+
         ((ImageButton) findViewById(R.id.my_a_study3_ib_first)).setOnClickListener(this);
         ((ImageButton) findViewById(R.id.my_a_study3_ib_prev)).setOnClickListener(this);
         ((ImageButton) findViewById(R.id.my_a_study3_ib_play)).setOnClickListener(this);
@@ -140,9 +145,7 @@ public class Study3Activity extends AppCompatActivity implements View.OnClickLis
 
         getListView();
 
-        AdView av = (AdView)this.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     @Override
@@ -172,9 +175,20 @@ public class Study3Activity extends AppCompatActivity implements View.OnClickLis
 
             mWordMean = "MEAN";
             getListView();
-        } else if (v.getId() == R.id.my_a_study3_b_random) {
+        } else if (v.getId() == R.id.my_rb_sort_asc) {
             mThread.interrupt();
 
+            mSort = "QUESTION ASC";
+            getListView();
+        } else if (v.getId() == R.id.my_rb_sort_desc) {
+            mThread.interrupt();
+
+            mSort = "QUESTION DESC";
+            getListView();
+        } else if (v.getId() == R.id.my_rb_sort_random) {
+            mThread.interrupt();
+
+            mSort = "RANDOM_SEQ";
             mDb.execSQL(DicQuery.updVocRandom());
             getListView();
         } else if (v.getId() == R.id.my_a_study3_ib_first) {
@@ -290,7 +304,7 @@ public class Study3Activity extends AppCompatActivity implements View.OnClickLis
         if (mMemorization.length() == 1) {
             sql.append("   AND A.MEMORIZATION = '" + mMemorization + "' " + CommConstants.sqlCR);
         }
-        sql.append(" ORDER BY A.RANDOM_SEQ" + CommConstants.sqlCR);
+        sql.append(" ORDER BY " + mSort + CommConstants.sqlCR);
         mCursor = mDb.rawQuery(sql.toString(), null);
         if ( mCursor.moveToNext() ) {
             sb.setMax(mCursor.getCount() - 1);
@@ -311,7 +325,7 @@ public class Study3Activity extends AppCompatActivity implements View.OnClickLis
             tv_spelling.setText("");
             tv_answer.setText("");*/
 
-            new android.app.AlertDialog.Builder(this)
+            new android.support.v7.app.AlertDialog.Builder(this)
                     .setTitle("알림")
                     .setMessage("데이타가 없습니다.\n암기 여부, 일자 조건을 조정해 주세요.")
                     .setPositiveButton("확인", new DialogInterface.OnClickListener() {

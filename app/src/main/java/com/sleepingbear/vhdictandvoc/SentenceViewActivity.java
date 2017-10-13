@@ -92,9 +92,7 @@ public class SentenceViewActivity extends AppCompatActivity implements View.OnCl
             mySample.setImageResource(android.R.drawable.star_off);
         }
 
-        AdView av = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     public void changeListView() {
@@ -121,7 +119,7 @@ public class SentenceViewActivity extends AppCompatActivity implements View.OnCl
         }
 
         ((TextView) findViewById(R.id.my_c_sv_tv_viet)).setText(notHan);
-        ((TextView) findViewById(R.id.my_c_sv_tv_han)).setText(han);
+        ((TextView) findViewById(R.id.my_c_sv_tv_han)).setText("-> " + han);
 
         StringBuffer sql = new StringBuffer();
         if ( "".equals(word) ) {
@@ -135,6 +133,7 @@ public class SentenceViewActivity extends AppCompatActivity implements View.OnCl
 
         //스펠링을 찾는다.
         String spelling = "";
+        /*
         HashMap<String, String> words = new HashMap<String, String>();
         while ( wordCursor.moveToNext() ) {
             words.put(wordCursor.getString(wordCursor.getColumnIndexOrThrow("WORD")), wordCursor.getString(wordCursor.getColumnIndexOrThrow("SPELLING")));
@@ -162,6 +161,8 @@ public class SentenceViewActivity extends AppCompatActivity implements View.OnCl
             spelling += DicUtils.getSentenceWord(splitStr, 1, m) + " ";
         }
         ((TextView) findViewById(R.id.my_c_sv_tv_spelling)).setText("  -> " + spelling.replaceAll("[\\[\\]]", ""));
+        */
+        ((TextView) findViewById(R.id.my_c_sv_tv_spelling)).setVisibility(View.GONE);
 
         ListView dicViewListView = (ListView) this.findViewById(R.id.my_c_sv_lv_list);
         sentenceViewAdapter = new SentenceViewCursorAdapter(this, wordCursor, 0);

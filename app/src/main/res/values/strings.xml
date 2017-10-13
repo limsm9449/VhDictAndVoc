@@ -19,6 +19,7 @@
     <string name="action_patch">패치 내역</string>
     <string name="action_sentence_write">aa</string>
     <string name="action_no_ad">광고 제거 어플(유료)</string>
+    <string name="action_web">웹페이지</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -58,4 +59,7 @@
     <string name="title_activity_category_view">카테고리별 상세</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-3860766380986792/1647308662</string>
+    <string name="title_activity_vsl">VSL 학습</string>
+    <string name="title_activity_news2">News2Activity</string>
+    <string name="title_activity_news2_view">News2ViewActivity</string>
 </resources>

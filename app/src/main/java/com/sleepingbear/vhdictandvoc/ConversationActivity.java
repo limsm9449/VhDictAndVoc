@@ -97,9 +97,7 @@ public class ConversationActivity extends AppCompatActivity implements View.OnCl
 
         changeListView(false);
 
-        AdView av = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     @Override

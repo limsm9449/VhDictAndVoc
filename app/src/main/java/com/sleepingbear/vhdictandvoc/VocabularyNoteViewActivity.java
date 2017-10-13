@@ -90,7 +90,7 @@ public class VocabularyNoteViewActivity extends AppCompatActivity implements Vie
                 mOrder = parent.getSelectedItemPosition();
 
                 if ( mOrder == 6 ) {
-                    Toast.makeText(getApplicationContext(), "Random으로 조회시 암기여부를 체크할때 정렬이 다시 되기 때문에 보여지는 것이 틀려집니다.", Toast.LENGTH_LONG).show();
+                    db.execSQL(DicQuery.updVocRandom());
                 }
 
                 getListView();
@@ -102,9 +102,7 @@ public class VocabularyNoteViewActivity extends AppCompatActivity implements Vie
         });
         spinner.setSelection(0);
 
-        AdView av = (AdView)this.findViewById(R.id.adView);
-        AdRequest adRequest = new  AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     public void getListView() {
@@ -136,7 +134,7 @@ public class VocabularyNoteViewActivity extends AppCompatActivity implements Vie
         } else if ( mOrder == 5 ) {
             sql.append(" ORDER BY B.MEAN" + CommConstants.sqlCR);
         } else if ( mOrder == 6 ) {
-            sql.append(" ORDER BY RANDOM()" + CommConstants.sqlCR);
+            sql.append(" ORDER BY A.RANDOM_SEQ" + CommConstants.sqlCR);
         }
         DicUtils.dicSqlLog(sql.toString());
 
@@ -195,7 +193,7 @@ public class VocabularyNoteViewActivity extends AppCompatActivity implements Vie
             if ( !adapter.isCheck() ) {
                 Toast.makeText(this, "선택된 데이타가 없습니다.", Toast.LENGTH_SHORT).show();
             } else {
-                new android.app.AlertDialog.Builder(this)
+                new android.support.v7.app.AlertDialog.Builder(this)
                         .setTitle("알림")
                         .setMessage("삭제하시겠습니까?")
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {

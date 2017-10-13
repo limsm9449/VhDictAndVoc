@@ -67,9 +67,7 @@ public class WebDictionaryActivity extends AppCompatActivity {
 
         webDictionaryLoad();
 
-        AdView av = (AdView)this.findViewById(R.id.adView);
-        AdRequest adRequest = new  AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     public void webDictionaryLoad() {
@@ -167,7 +165,8 @@ public class WebDictionaryActivity extends AppCompatActivity {
                     if ( webView.canGoBack() ) {
                         webView.goBack();
                     } else {
-                        Toast.makeText(getApplicationContext(), "상단의 Back 버튼을 클릭해주세요.", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "상단의 Back 버튼을 클릭해주세요.", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                     return true;
             }

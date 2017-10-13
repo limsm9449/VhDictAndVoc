@@ -110,9 +110,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         Button b_start = (Button) findViewById(R.id.my_f_stu_b_start);
         b_start.setOnClickListener(this);
 
-        AdView av = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new  AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     public void getVocKind() {

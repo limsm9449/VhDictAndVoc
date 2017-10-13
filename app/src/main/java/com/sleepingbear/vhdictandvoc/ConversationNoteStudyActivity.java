@@ -92,9 +92,7 @@ public class ConversationNoteStudyActivity extends AppCompatActivity implements 
         //리스트 내용 변경
         changeListView();
 
-        AdView av = (AdView)this.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     public void changeListView() {

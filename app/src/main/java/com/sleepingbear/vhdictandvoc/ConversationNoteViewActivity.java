@@ -78,9 +78,7 @@ public class ConversationNoteViewActivity extends AppCompatActivity implements V
 
         changeListView();
 
-        AdView av = (AdView)this.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        av.loadAd(adRequest);
+        DicUtils.setAdView(this);
     }
 
     public void changeListView() {
