@@ -190,41 +190,49 @@ public class ConversationNoteStudyActivity extends AppCompatActivity implements 
                     ((TextView) dialog_layout.findViewById(R.id.my_tv_foreign)).setTextSize(fontSize);
 
                     // 광고 추가
-                    PublisherAdView mPublisherAdView = new PublisherAdView(this);
-                    mPublisherAdView.setAdSizes(new AdSize(300, 250));
-                    mPublisherAdView.setAdUnitId(getResources().getString(R.string.banner_ad_unit_id));
+                    if ( CommConstants.isFreeApp ) {
+                        PublisherAdView mPublisherAdView = new PublisherAdView(this);
+                        mPublisherAdView.setAdSizes(new AdSize(300, 250));
+                        mPublisherAdView.setAdUnitId(getResources().getString(R.string.banner_ad_unit_id));
 
-                    // Create an ad request.
-                    PublisherAdRequest.Builder publisherAdRequestBuilder = new PublisherAdRequest.Builder();
-                    ((RelativeLayout) dialog_layout.findViewById(R.id.my_rl_admob)).addView(mPublisherAdView);
+                        // Create an ad request.
+                        PublisherAdRequest.Builder publisherAdRequestBuilder = new PublisherAdRequest.Builder();
+                        ((RelativeLayout) dialog_layout.findViewById(R.id.my_rl_admob)).addView(mPublisherAdView);
 
-                    mPublisherAdView.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            super.onAdLoaded();
+                        mPublisherAdView.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                super.onAdLoaded();
 
-                            //개별 조회면은 다음 버튼을 안보이게 해준다.
-                            if ( cursor.getCount() > 1 ) {
-                                ((Button) dialog_layout.findViewById(R.id.my_b_next)).setVisibility(View.VISIBLE);
+                                //개별 조회면은 다음 버튼을 안보이게 해준다.
+                                if ( cursor.getCount() > 1 ) {
+                                    ((Button) dialog_layout.findViewById(R.id.my_b_next)).setVisibility(View.VISIBLE);
+                                }
+                                ((Button) dialog_layout.findViewById(R.id.my_b_close)).setVisibility(View.VISIBLE);
+                                ((Button) dialog_layout.findViewById(R.id.my_b_detail)).setVisibility(View.VISIBLE);
                             }
-                            ((Button) dialog_layout.findViewById(R.id.my_b_close)).setVisibility(View.VISIBLE);
-                            ((Button) dialog_layout.findViewById(R.id.my_b_detail)).setVisibility(View.VISIBLE);
-                        }
 
-                        @Override
-                        public void onAdFailedToLoad(int i) {
-                            super.onAdFailedToLoad(i);
+                            @Override
+                            public void onAdFailedToLoad(int i) {
+                                super.onAdFailedToLoad(i);
 
-                            if ( cursor.getCount() > 1 ) {
-                                ((Button) dialog_layout.findViewById(R.id.my_b_next)).setVisibility(View.VISIBLE);
+                                if ( cursor.getCount() > 1 ) {
+                                    ((Button) dialog_layout.findViewById(R.id.my_b_next)).setVisibility(View.VISIBLE);
+                                }
+                                ((Button) dialog_layout.findViewById(R.id.my_b_close)).setVisibility(View.VISIBLE);
+                                ((Button) dialog_layout.findViewById(R.id.my_b_detail)).setVisibility(View.VISIBLE);
                             }
-                            ((Button) dialog_layout.findViewById(R.id.my_b_close)).setVisibility(View.VISIBLE);
-                            ((Button) dialog_layout.findViewById(R.id.my_b_detail)).setVisibility(View.VISIBLE);
-                        }
-                    });
+                        });
 
-                    // Start loading the ad.
-                    mPublisherAdView.loadAd(publisherAdRequestBuilder.build());
+                        // Start loading the ad.
+                        mPublisherAdView.loadAd(publisherAdRequestBuilder.build());
+
+                        ((Button) dialog_layout.findViewById(R.id.my_b_next)).setVisibility(View.GONE);
+                        ((Button) dialog_layout.findViewById(R.id.my_b_close)).setVisibility(View.GONE);
+                        ((Button) dialog_layout.findViewById(R.id.my_b_detail)).setVisibility(View.GONE);
+                    } else {
+                        dialog_layout.findViewById(R.id.my_rl_admob).setVisibility(View.GONE);
+                    }
 
                     ((Button) dialog_layout.findViewById(R.id.my_b_next)).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -264,10 +272,6 @@ public class ConversationNoteStudyActivity extends AppCompatActivity implements 
                             alertDialog.dismiss();
                         }
                     });
-
-                    ((Button) dialog_layout.findViewById(R.id.my_b_next)).setVisibility(View.GONE);
-                    ((Button) dialog_layout.findViewById(R.id.my_b_close)).setVisibility(View.GONE);
-                    ((Button) dialog_layout.findViewById(R.id.my_b_detail)).setVisibility(View.GONE);
 
                     alertDialog.setCanceledOnTouchOutside(false);
                     alertDialog.show();
