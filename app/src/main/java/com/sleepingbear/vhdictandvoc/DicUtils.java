@@ -1339,15 +1339,12 @@ public class DicUtils {
         String date = prefs.getString(pref, "");
         dicLog(pref + " : " + date);
 
-        return false;
-        /*
         if ( date.equals(getCurrentDate()) ) {
             return true;
         } else {
             setPreferences(mContext, pref, getCurrentDate());
             return false;
         }
-        */
     }
 
     public static void initNewsPreferences(Context mContext) {
