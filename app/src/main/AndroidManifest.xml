@@ -186,6 +186,14 @@
         <activity
             android:name=".News2ViewActivity"
             android:label="@string/title_activity_news2_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CaptionActivity"
+            android:label="@string/title_activity_caption"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CaptionViewActivity"
+            android:label="@string/title_activity_caption_view"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -322,7 +322,7 @@ public class VslActivity extends AppCompatActivity implements View.OnClickListen
         if ( "".equals(mp3File) ) {
             new android.support.v7.app.AlertDialog.Builder(this)
                     .setTitle("알림")
-                    .setMessage("왼쪽 다운로드 버튼을 클릭해서 MP3 파일을 먼저 다운로드 받으셔야 합니다.")
+                    .setMessage("왼쪽 다운로드 버튼을 클릭해서 MP3 파일을 먼저 다운로드 받으셔야 합니다.(8Mb 정도)")
                     .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -379,55 +379,35 @@ public class VslActivity extends AppCompatActivity implements View.OnClickListen
             try {
                 downloadURL = "";
 
-                String mp3FileName = "";
                 if ( "VSL1".equals(fileName.substring(0, 4)) ) {
-                    mp3FileName = "VSL_MP3_1.zip";
+                    downloadURL = "http://limsm9449data.cafe24.com/VSL_MP3_1.zip";
                 } else if ( "VSL2".equals(fileName.substring(0, 4)) ) {
-                    mp3FileName = "VSL_MP3_2.zip";
+                    downloadURL = "http://limsm9449data.cafe24.com/VSL_MP3_2.zip";
                 } else if ( "VSL3".equals(fileName.substring(0, 4)) ) {
-                    mp3FileName = "VSL_MP3_3.zip";
+                    downloadURL = "http://limsm9449data.cafe24.com/VSL_MP3_3.zip";
                 } else {
-                    mp3FileName = "VSL_MP3_4.zip";
+                    downloadURL = "http://limsm9449data.cafe24.com/VSL_MP3_4.zip";
                 }
 
-                Document doc = DicUtils.getDocument("http://blog.naver.com/PostList.nhn?blogId=limsm9449&logNo=221105962247");
-                String[] html = doc.html().split("\n");
-                for ( int i = 0; i < html.length; i++ ) {
-                    if ( html[i].indexOf("aPostFiles[1]") > -1 ) {
-                        JSONArray ja = new JSONArray (html[i].replaceAll("aPostFiles\\[1\\] =", "").trim());
+                InputStream inputStream = new URL(downloadURL).openStream();
 
-                        for (int si = 0; si < ja.length(); si++){
-                            JSONObject obj = ja.getJSONObject(si);
-                            if ( mp3FileName.equals(obj.getString("encodedAttachFileName")) ) {
-                                downloadURL = obj.getString("encodedAttachFileUrl");
-                                break;
-                            }
-                        }
-                        break;
-                    }
+                File appDir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + CommConstants.folderName + CommConstants.folderVslName);
+                if (!appDir.exists()) {
+                    appDir.mkdirs();
                 }
 
-                if ( !"".equals(downloadURL) ) {
-                    InputStream inputStream = new URL(downloadURL).openStream();
+                File file = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + CommConstants.folderName + CommConstants.folderVslName + "/" + fileName);
+                OutputStream out = new FileOutputStream(file);
 
-                    File appDir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + CommConstants.folderName + CommConstants.folderVslName);
-                    if (!appDir.exists()) {
-                        appDir.mkdirs();
-                    }
-
-                    File file = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + CommConstants.folderName + CommConstants.folderVslName + "/" + fileName);
-                    OutputStream out = new FileOutputStream(file);
-
-                    int c = 0;
-                    while ((c = inputStream.read()) != -1) {
-                        out.write(c);
-                    }
-                    out.flush();
-                    out.close();
-
-                    Decompress d = new Decompress(Environment.getExternalStorageDirectory().getAbsoluteFile() + CommConstants.folderName + CommConstants.folderVslName + "/" + fileName, Environment.getExternalStorageDirectory().getAbsoluteFile() + CommConstants.folderName + CommConstants.folderVslName + "/");
-                    d.unzip();
+                int c = 0;
+                while ((c = inputStream.read()) != -1) {
+                    out.write(c);
                 }
+                out.flush();
+                out.close();
+
+                Decompress d = new Decompress(Environment.getExternalStorageDirectory().getAbsoluteFile() + CommConstants.folderName + CommConstants.folderVslName + "/" + fileName, Environment.getExternalStorageDirectory().getAbsoluteFile() + CommConstants.folderName + CommConstants.folderVslName + "/");
+                d.unzip();
             } catch ( Exception e ) {
                 DicUtils.dicLog("mp3Download 에러 = " + e.toString());
             }
