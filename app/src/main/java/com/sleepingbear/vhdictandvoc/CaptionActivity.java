@@ -38,7 +38,7 @@ import java.net.URL;
 
 public class CaptionActivity extends AppCompatActivity {
 
-    private CaptionDbHelper dbHelper;
+    private DbHelper dbHelper;
     private SQLiteDatabase db;
     int fontSize = 0;
     private CaptionCursorAdapter adapter;
@@ -46,9 +46,12 @@ public class CaptionActivity extends AppCompatActivity {
     private Cursor cursor;
     public Spinner s_group;
     private String categoryGroupCode = "G001";
+    private String dramaCode;
+    private String dramaTitle;
+    private String dramaDirectory;
 
 
-    private CaptionActivity.FileDownloadTask task;
+    private FileDownloadTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +68,18 @@ public class CaptionActivity extends AppCompatActivity {
         ab.setHomeButtonEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        dbDownload();
+        dbHelper = new DbHelper(this);
+        db = dbHelper.getWritableDatabase();
+
+        checkDramaVersion();
 
         DicUtils.setAdView(this);
     }
 
     public void initScreen() {
-        dbHelper = new CaptionDbHelper(this);
-        db = dbHelper.getWritableDatabase();
-
         fontSize = Integer.parseInt( DicUtils.getPreferencesValue( this, CommConstants.preferences_font ) );
 
-        Cursor cursor = db.rawQuery(CaptionQuery.getCategoryGroupKind(), null);
+        Cursor cursor = db.rawQuery(CaptionQuery.getDramaGroupKind(), null);
         String[] from = new String[]{"KIND_NAME"};
         int[] to = new int[]{android.R.id.text1};
         SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, cursor, from, to);
@@ -131,7 +134,7 @@ public class CaptionActivity extends AppCompatActivity {
     }
 
     public void changeListView() {
-        cursor = db.rawQuery(CaptionQuery.getCategoryList(categoryGroupCode), null);
+        cursor = db.rawQuery(CaptionQuery.getDramaList(categoryGroupCode), null);
 
         if ( cursor.getCount() == 0 ) {
             Toast.makeText(this, "검색된 데이타가 없습니다.", Toast.LENGTH_SHORT).show();
@@ -151,22 +154,44 @@ public class CaptionActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Cursor cur = (Cursor) adapter.getItem(position);
 
-            Bundle bundle = new Bundle();
-            bundle.putString("CODE", cur.getString(cur.getColumnIndexOrThrow("KIND")));
-            bundle.putString("TITLE", cur.getString(cur.getColumnIndexOrThrow("KIND_NAME")));
+            if ( CaptionQuery.existDramaCaption(db, cur.getString(cur.getColumnIndexOrThrow("KIND"))) ) {
+                Bundle bundle = new Bundle();
+                bundle.putString("CODE", cur.getString(cur.getColumnIndexOrThrow("KIND")));
+                bundle.putString("TITLE", cur.getString(cur.getColumnIndexOrThrow("KIND_NAME")));
 
-            Intent intent = new Intent(getApplication(), CaptionViewActivity.class);
-            intent.putExtras(bundle);
+                Intent intent = new Intent(getApplication(), CaptionViewActivity.class);
+                intent.putExtras(bundle);
 
-            startActivity(intent);
+                startActivity(intent);
+            } else {
+                dramaCode = cur.getString(cur.getColumnIndexOrThrow("KIND"));
+                dramaTitle = cur.getString(cur.getColumnIndexOrThrow("KIND_NAME"));
+                dramaDirectory = cur.getString(cur.getColumnIndexOrThrow("DIRECTORY"));
+
+                if ( DicUtils.isNetWork(CaptionActivity.this) ) {
+                    taskKind = "DRAMA_CAPTION";
+                    task = new FileDownloadTask();
+                    task.execute();
+                } else {
+                    new android.support.v7.app.AlertDialog.Builder(CaptionActivity.this)
+                            .setTitle("알림")
+                            .setMessage("네트워크에 연결되어있지 않습니다.")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
+                }
+            }
         }
     };
 
 
-    public void dbDownload() {
+    public void checkDramaVersion() {
         if ( DicUtils.isNetWork(this) ) {
-            taskKind = "CAPTION_TXT";
-            task = new CaptionActivity.FileDownloadTask();
+            taskKind = "DRAMA_VERSION";
+            task = new FileDownloadTask();
             task.execute();
         } else {
             initScreen();
@@ -195,9 +220,46 @@ public class CaptionActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... arg0) {
             try {
-                if ( "CAPTION_TXT".equals(taskKind) ) {
-                    Document doc = DicUtils.getDocument("http://limsm9449data.cafe24.com/vnCaption.txt");
-                    version = doc.text().trim();
+                if ( "DRAMA_VERSION".equals(taskKind) ) {
+                    version = DicUtils.getUrlText("http://limsm9449data.cafe24.com/drama/vn/vnCaption.txt");
+
+                    if ( !DicUtils.getPreferences(CaptionActivity.this, "CAPTION_VERSION", "-").equals(version) ||
+                            CaptionQuery.existDrama(db) == false ) {
+                        // 드라마 초기화
+                        CaptionQuery.initDrama(db);
+
+                        try {
+                            db.beginTransaction();
+                            String[] list = DicUtils.getUrlText("http://limsm9449data.cafe24.com/drama/vn/vnList.txt").split("\n");
+                            for (int i = 0; i < list.length; i++) {
+                                String[] drama = list[i].split("\\^");
+                                CaptionQuery.insDrama(db, drama[0], drama[1], drama[2]);
+                            }
+                            db.setTransactionSuccessful();
+                            db.endTransaction();
+                        } catch ( Exception e ) {
+                            DicUtils.dicLog("DRAMA_VERSION 에러 = " + e.toString());
+                            db.endTransaction();
+                        }
+
+                        DicUtils.setPreferences( CaptionActivity.this, "CAPTION_VERSION", version );
+                    }
+                } else if ( "DRAMA_CAPTION".equals(taskKind) ) {
+                    String[] list = DicUtils.getUrlText("http://limsm9449data.cafe24.com/drama/vn/" + dramaDirectory + "/" + dramaCode + ".txt").split("\n");
+
+                    try {
+                        db.beginTransaction();
+                        for ( int i = 0; i < list.length; i++ ) {
+                            String[] caption = list[i].split("\\^");
+                            CaptionQuery.insCaption(db, dramaCode, caption[0], caption[1], caption[2]);
+                        }
+                        db.setTransactionSuccessful();
+                        db.endTransaction();
+                    } catch ( Exception e ) {
+                        DicUtils.dicLog("DRAMA_CAPTION 에러 = " + e.toString());
+                        db.endTransaction();
+                    }
+                /*
                 } else if ( "CAPTION_ZIP".equals(taskKind) ) {
                     InputStream inputStream = new URL("http://limsm9449data.cafe24.com/vnCaption.zip").openStream();
 
@@ -239,6 +301,7 @@ public class CaptionActivity extends AppCompatActivity {
                     //임시 파일 삭제
                     //(new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + CommConstants.folderName + "/vnCaption.db")).delete();
                     //(new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + CommConstants.folderName + "/vnCaption.zip")).delete();
+                */
                 }
             } catch ( Exception e ) {
                 DicUtils.dicLog("Download 에러 = " + e.toString());
@@ -252,7 +315,8 @@ public class CaptionActivity extends AppCompatActivity {
             pd.dismiss();
             task = null;
 
-            if ( "CAPTION_TXT".equals(taskKind) ) {
+            if ( "DRAMA_VERSION".equals(taskKind) ) {
+                /*
                 if ( !DicUtils.getPreferences(CaptionActivity.this, "CAPTION_VERSION", "-").equals(version) ) {
                     new android.support.v7.app.AlertDialog.Builder(CaptionActivity.this)
                             .setTitle("알림")
@@ -275,8 +339,22 @@ public class CaptionActivity extends AppCompatActivity {
                 } else {
                     initScreen();
                 }
+                */
+
+                initScreen();
+            /*
             } else if ( "CAPTION_ZIP".equals(taskKind) ) {
                 initScreen();
+            */
+            } else if ( "DRAMA_CAPTION".equals(taskKind) ) {
+                Bundle bundle = new Bundle();
+                bundle.putString("CODE", dramaCode);
+                bundle.putString("TITLE", dramaTitle);
+
+                Intent intent = new Intent(getApplication(), CaptionViewActivity.class);
+                intent.putExtras(bundle);
+
+                startActivity(intent);
             }
 
             super.onPostExecute(result);

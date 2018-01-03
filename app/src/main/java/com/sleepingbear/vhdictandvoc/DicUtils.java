@@ -1409,4 +1409,19 @@ public class DicUtils {
 
         return (isWifiAvailable && isWifiConnect) || (isMobileAvailable && isMobileConnect);
     }
+
+    public static String getUrlText(String url) {
+        StringBuffer sb = new StringBuffer();
+        try {
+            InputStream inputStream = new URL(url).openStream();
+            byte[] b = new byte[1024];
+            int c = 0;
+            while ((c = inputStream.read(b)) != -1) {
+                sb.append(new String(b, 0, c));
+            }
+        } catch ( Exception e ) {
+        }
+        return sb.toString();
+    }
+
 }

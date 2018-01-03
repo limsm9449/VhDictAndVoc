@@ -20,7 +20,7 @@ import java.io.OutputStream;
 class DbHelper extends SQLiteOpenHelper {
     private static String DB_NAME ="vhdictandvoc.db";
     private String DB_PATH = "";
-    private static final int DATABASE_VERSION = 84;
+    private static final int DATABASE_VERSION = 86;
     private final Context mContext;
 
     public DbHelper(Context context) {
