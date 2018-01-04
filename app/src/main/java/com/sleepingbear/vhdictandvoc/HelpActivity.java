@@ -238,7 +238,7 @@ public class HelpActivity extends AppCompatActivity {
         }
 
         tempSb.delete(0, tempSb.length());
-        tempSb.append("* 미드 자막" + CommConstants.sqlCR);
+        tempSb.append("* 미드" + CommConstants.sqlCR);
         tempSb.append("- 미드의 베트남 자막으로 학습을 해볼 수 있도록 만들었습니다." + CommConstants.sqlCR);
         tempSb.append("주의사항) 1.다른 분들이 만들어준 자막이기 때문에 오역이 있을 수 있습니다.");
         tempSb.append(" 2.한 문장이 길 경우 초단위로 볼 때 순번이 틀릴수도 있으니 참고하세요." + CommConstants.sqlCR);
